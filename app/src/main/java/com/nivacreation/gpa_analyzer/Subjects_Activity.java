@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -89,6 +90,23 @@ public class Subjects_Activity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        String kk = sName.substring(sName.length()-1);
+        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+        Log.d("123"," b "+b);
+        String nam = "courseCount"+kk;
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+
+        if (isShow == null){
+            Intent intent = new Intent(Subjects_Activity.this, Semesters_Activity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private ArrayList<Subjects> getMyList() {

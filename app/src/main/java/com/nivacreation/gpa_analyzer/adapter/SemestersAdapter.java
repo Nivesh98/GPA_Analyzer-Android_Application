@@ -76,7 +76,6 @@ public class SemestersAdapter extends RecyclerView.Adapter<SemestersAdapter.Seme
                     if(isShow.equals(k.trim())){
                         Intent intent = new Intent(context, Subjects_Activity.class);
                         intent.putExtra("SemesterName", semestersArrayList.get(position).getTitle());
-
                         context.startActivity(intent);
 
                     }else{

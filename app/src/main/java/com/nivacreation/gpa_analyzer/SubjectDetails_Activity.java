@@ -66,7 +66,7 @@ public class SubjectDetails_Activity extends AppCompatActivity {
 //                        PreferenceManager.getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString("courseCount", countToString).apply();
 
                         startActivity(signInActivity);
-                        //finish();
+                        finish();
                     }else {
                         editText.setError("Subject should be \"1 - 15\" !");
                     }
