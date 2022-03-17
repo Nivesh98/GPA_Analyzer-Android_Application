@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/signin_background"
+    tools:context=".SignIn_Activity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_marginTop="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:background="@drawable/first_name"
+                android:id="@+id/firstName"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:paddingLeft="60dp"
+                android:hint="first name"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:background="@drawable/last_name"
+                android:id="@+id/lastName"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:paddingLeft="60dp"
+                android:hint="last name"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/emailSignup"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:hint="email"
+                android:background="@drawable/email_login"
+                android:paddingLeft="60dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="#64E116"
+                >
+
+                <EditText
+                    android:id="@+id/passwordSignup"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="password"
+                    android:paddingLeft="60dp"
+                    android:inputType="textPassword"
+                    android:background="@drawable/comfirm_password"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="#64E116"
+                >
+
+                <EditText
+                    android:id="@+id/confirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:hint="confirm password"
+                    android:inputType="textPassword"
+                    android:background="@drawable/comfirm_password"
+                    android:paddingLeft="60dp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:id="@+id/signupBtn"
+                android:layout_width="181dp"
+                android:layout_height="46dp"
+                android:background="@drawable/signup"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already Registered?"
+                android:textColor="#55D306"/>
+
+            <TextView
+                android:id="@+id/loginTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="italic|bold"
+                android:text="Login"
+                android:textColor="#55D306"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

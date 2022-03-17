@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nivacreation.gpa_analyzer">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/gpa"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/gpa"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.GPA_ANALYZER">
+        <activity android:name=".SplashScreen_Activity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SubjectDetails_Activity" />
+        <activity android:name=".Subjects_Activity" />
+        <activity android:name=".Semesters_Activity" />
+        <activity android:name=".FirstHome_Activity" />
+        <activity android:name=".SignIn_Activity" />
+        <activity android:name=".MainActivity">
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:background="@drawable/detail_back"
+    tools:context=".FirstHome_Activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Semester Count Here"
+            android:textColor="#8BC34A"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:layout_marginTop="110dp"
+            android:background="@drawable/count_text"
+            />
+
+        <EditText
+            android:id="@+id/countEtx"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:hint="count"
+            android:textColor="#8BC34A"
+            android:textColorHint="#8BC34A"
+            android:inputType="number"
+            android:background="@drawable/setting_edit_text"
+            />
+
+        <TextView
+            android:layout_width="241dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/count_text"
+            android:gravity="center"
+            android:text="Edit Grade point"
+            android:textColor="#8BC34A"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/edit"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/continueBtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/continue_btn"
+            android:textSize="25sp" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

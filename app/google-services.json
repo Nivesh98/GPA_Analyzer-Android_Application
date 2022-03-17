@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "340612218052",
+    "project_id": "gpa-analyzer-531bb",
+    "storage_bucket": "gpa-analyzer-531bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340612218052:android:6f876035b15d0becdcdd91",
+        "android_client_info": {
+          "package_name": "com.nivacreation.gpa_analyzer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340612218052-20e9cgv0aaq4ni82erkck0032gmjneie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyKZU_MgUtHPsy0_4p_qVBHIxF_rTg7iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340612218052-20e9cgv0aaq4ni82erkck0032gmjneie.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
