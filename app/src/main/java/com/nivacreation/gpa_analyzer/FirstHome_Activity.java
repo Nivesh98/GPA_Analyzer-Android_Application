@@ -26,6 +26,9 @@ public class FirstHome_Activity extends AppCompatActivity {
 
         count = findViewById(R.id.countEtx);
 
+        PreferenceManager
+                .getDefaultSharedPreferences(this).edit().putString("semesterDetail", "1").apply();
+
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

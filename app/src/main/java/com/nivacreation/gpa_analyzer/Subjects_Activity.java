@@ -1,5 +1,6 @@
 package com.nivacreation.gpa_analyzer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,6 +21,8 @@ import com.nivacreation.gpa_analyzer.adapter.SemestersAdapter;
 import com.nivacreation.gpa_analyzer.adapter.SubjectsAdapter;
 import com.nivacreation.gpa_analyzer.model.Semesters;
 import com.nivacreation.gpa_analyzer.model.Subjects;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +43,12 @@ public class Subjects_Activity extends AppCompatActivity {
 
     static Subjects subject;
 
+    String sName;
+
+    String countGetValue;
+
     DocumentReference documentReference;
+    String semesterName;
 
     int countValueToInt;
 
@@ -60,6 +70,12 @@ public class Subjects_Activity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         String userId = fAuth.getCurrentUser().getUid();
 
+        sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+
+        if (fAuth.getCurrentUser().getUid() != null){
+            FirebaseFirestore.getInstance().collection("Subjects").document(userId.trim()).delete();
+        }
+
         subjectsArrayList = new ArrayList<Subjects>();
 
         subjectsAdapter = new SubjectsAdapter(this,getMyList());
@@ -69,14 +85,6 @@ public class Subjects_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                ArrayList<Subjects> s = new ArrayList<>();
-//
-//               for (Subjects items : subjectsArrayList){
-//
-//                   s.add(items);
-//               }
-//
-//               subjectsAdapter.filterList(s);
             }
         });
 
@@ -85,14 +93,23 @@ public class Subjects_Activity extends AppCompatActivity {
 
     private ArrayList<Subjects> getMyList() {
 
+
+
+        Log.d("111","sName "+sName);
+        String kk = sName.substring(sName.length()-1);
+
         ArrayList<Subjects> subjects = new ArrayList<>();
 
         Subjects s;
+        //String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString("courseCount", "");
+        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+
+        Log.d("123"," b "+b);
+        String nam = "courseCount"+kk;
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
 
 
-        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString("courseCount", "");
-
-        String countGetValue = isShow;
+            countGetValue = isShow;
 
         if (isShow != null){
             countValueToInt = Integer.parseInt(countGetValue);
@@ -102,16 +119,8 @@ public class Subjects_Activity extends AppCompatActivity {
 
             s = new Subjects();
             s.setNumber(String.valueOf(i));
-//            s.setGetMethodGPA(s.getGetMethodGPA());
-//            s.setGetMethodCredit(s.getGetMethodCredit());
-//            s.setGetMethodGrade(s.getGetMethodGrade());
            subjects.add(s);
         }
-//        user.put("Grade",subject.getGetMethodGrade());
-//        user.put("Credit",subject.getGetMethodCredit());
-//        user.put("Gpa",subject.getGetMethodGPA());
-//        documentReference.set(user);
-
         return subjects;
     }
 }

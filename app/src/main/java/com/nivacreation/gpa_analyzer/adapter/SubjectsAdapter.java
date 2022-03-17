@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -74,6 +75,7 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
 
         subjects = subjectsArrayList.get(position);
         String num = subjects.getNumber();
+
         documentReference = fStore.collection("Subjects").document(userId).collection(num).document(num);
 
         holder.number.setText(subjects.getNumber());
