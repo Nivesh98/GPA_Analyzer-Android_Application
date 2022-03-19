@@ -55,6 +55,7 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/editBtn"
             android:layout_width="60dp"
             android:layout_height="20dp"
             android:layout_gravity="center"

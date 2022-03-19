@@ -78,16 +78,26 @@ public class Semesters_Activity extends AppCompatActivity {
 
         String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString("isShow", "");
 
-        String countGetValue = isShow;
+        if (isShow != ""){
+            String countGetValue = isShow;
+            int countValueToInt;
 
-        int countValueToInt = Integer.parseInt(countGetValue);
+            if(countGetValue != ""){
+                countValueToInt = Integer.parseInt(countGetValue);
+                for(int i=1; i<=countValueToInt; i++){
 
-        for(int i=1; i<=countValueToInt; i++){
-
-            s = new Semesters();
-            s.setTitle("Semester "+i);
-            semesters.add(s);
+                    s = new Semesters();
+                    s.setTitle("Semester "+i);
+                    semesters.add(s);
+                }
+            }
         }
+
+
+
+
+
+
 
         return semesters;
     }

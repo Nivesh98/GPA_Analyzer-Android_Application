@@ -102,8 +102,9 @@ public class Subjects_Activity extends AppCompatActivity {
         String nam = "courseCount"+kk;
         String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
 
-        if (isShow == null){
+        if (isShow != null){
             Intent intent = new Intent(Subjects_Activity.this, Semesters_Activity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         }
