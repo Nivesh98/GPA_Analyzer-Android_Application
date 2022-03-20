@@ -4,11 +4,27 @@ import java.util.ArrayList;
 
 public class Subjects {
 
-    String number, getMethodGrade, getMethodCredit, getMethodGPA;
+    String number, getMethodGrade, getMethodCredit, getMethodGPA, subjectName, subjectCode;
 
     ArrayList<String> grade = new ArrayList<>();
     ArrayList<String> credit = new ArrayList<>();
     ArrayList<String> gpa = new ArrayList<>();
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getSubjectCode() {
+        return subjectCode;
+    }
+
+    public void setSubjectCode(String subjectCode) {
+        this.subjectCode = subjectCode;
+    }
 
     public String getGetMethodGrade() {
         return getMethodGrade;

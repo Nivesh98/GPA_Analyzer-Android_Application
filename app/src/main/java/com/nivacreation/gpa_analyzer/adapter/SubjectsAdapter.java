@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -79,6 +80,8 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
         documentReference = fStore.collection("Subjects").document(userId).collection(num).document(num);
 
         holder.number.setText(subjects.getNumber());
+        holder.subjectName.setText("Subject Name "+num);
+        holder.subjectCode.setText("Subject Code "+num);
         holder.grade.setAdapter(new ArrayAdapter<>(context.getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,subjects.getGrade()));
         holder.grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -160,6 +163,7 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
 
         TextView number;
        Spinner grade, credit, gpa;
+       EditText subjectName, subjectCode;
       // Button evaluateBtn;
 
         public SubjectsViewHolder(@NonNull @NotNull View itemView) {
@@ -169,7 +173,9 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
             this.grade = itemView.findViewById(R.id.gradeSpinner);
             this.credit = itemView.findViewById(R.id.creditSpinner);
             this.gpa = itemView.findViewById(R.id.gpaSpinner);
-            //this.evaluateBtn = itemView.findViewById(R.id.evaluateBtn);
+
+            this.subjectCode = itemView.findViewById(R.id.subjectCodeBtn);
+            this.subjectName = itemView.findViewById(R.id.subjectNameBtn);
 
         }
 
