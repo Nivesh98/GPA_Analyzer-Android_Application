@@ -142,10 +142,6 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
 
             }
         });
-//        user.put("Grade", holder.grade.getSelectedItem());
-//        user.put("Credit",holder.credit.getSelectedItem());
-//        user.put("Gpa",holder.gpa.getSelectedItem());
-//        documentReference.set(user);
         subjects.setGetMethodGrade(holder.grade.getSelectedItem().toString());
         subjects.setGetMethodCredit(holder.credit.getSelectedItem().toString());
         subjects.setGetMethodGPA(holder.gpa.getSelectedItem().toString());

@@ -39,6 +39,8 @@ public class SubjectDetails_Activity extends AppCompatActivity implements Gestur
     String userId;
     String vui;
 
+    int b;
+
     //for swip
     private static final String TAG = "Swipe Position";
     private float x1, x2, y1, y2;
@@ -72,10 +74,9 @@ public class SubjectDetails_Activity extends AppCompatActivity implements Gestur
         Log.d("123"," k "+k);
 
         String a = semesterName.substring(semesterName.length()-1);
-        int b = Integer.parseInt(a);
+        b = Integer.parseInt(a);
         --b;
-        PreferenceManager
-                .getDefaultSharedPreferences(this).edit().putString("subjectDetails"+b, k.trim()).apply();
+
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +85,8 @@ public class SubjectDetails_Activity extends AppCompatActivity implements Gestur
 
 
                 if (!editText.getText().toString().isEmpty()){
+                    PreferenceManager
+                            .getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString("subjectDetails"+b, k.trim()).apply();
                     int intCount = Integer.parseInt(editText.getText().toString());
                     if(intCount >=1 && intCount<=15){
                         String countToString = editText.getText().toString();
