@@ -3,6 +3,9 @@ package com.nivacreation.gpa_analyzer.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +20,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.nivacreation.gpa_analyzer.R;
 import com.nivacreation.gpa_analyzer.SubjectDetails_Activity;
 import com.nivacreation.gpa_analyzer.model.Semesters;
@@ -34,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.SubjectsViewHolder> {
 
@@ -43,7 +51,11 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
 
     Map<String,Object> user = new HashMap<>();
 
-    static Subjects subjects;
+    Subjects subjects;
+
+    String isValue;
+
+    int selectedItemGradeInt;
 
     DocumentReference documentReference;
 
@@ -77,11 +89,71 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
         subjects = subjectsArrayList.get(position);
         String num = subjects.getNumber();
 
-        documentReference = fStore.collection("Subjects").document(userId).collection(num).document(num);
+        String isShow = PreferenceManager.getDefaultSharedPreferences(context).getString("sName", "");
+
+        if (isShow != null){
+            isValue = isShow;
+        }
+
+        documentReference = fStore.collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num);
 
         holder.number.setText(subjects.getNumber());
         holder.subjectName.setText("Subject Name "+num);
         holder.subjectCode.setText("Subject Code "+num);
+
+        subjects.setSubjectName(holder.subjectName.getText().toString());
+        subjects.setSubjectCode(holder.subjectCode.getText().toString());
+
+        holder.subjectName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                documentReference = fStore.collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num);
+                //holder.subjectName.setText(holder.subjectName.getText());
+                user.put("subjectName", holder.subjectName.getText().toString());
+                documentReference.set(user);
+           //     holder.subjectName.setText(holder.subjectName.getText());
+//                user.put("subjectName", holder.subjectName.getText().toString());
+//                FirebaseFirestore.getInstance().collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num).update(user);
+                subjects.setSubjectName(holder.subjectName.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        holder.subjectCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                documentReference = fStore.collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num);
+                //holder.subjectName.setText(holder.subjectName.getText());
+                user.put("subjectCode", holder.subjectCode.getText().toString());
+                documentReference.set(user);
+
+                //holder.subjectName.setText(holder.subjectName.getText());
+//                user.put("subjectCode", holder.subjectCode.getText().toString());
+//                FirebaseFirestore.getInstance().collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num).update(user);
+                subjects.setSubjectCode(holder.subjectCode.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         holder.grade.setAdapter(new ArrayAdapter<>(context.getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,subjects.getGrade()));
         holder.grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -89,12 +161,27 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
                 selectedItemGrade = parent.getItemAtPosition(position).toString();
                 documentReference = fStore.collection("Subjects").document(userId).collection(num).document(num);
-                subjects.setGetMethodGrade(selectedItemGrade);
-                user.put("Grade", holder.grade.getSelectedItem());
-                documentReference.set(user);
+                documentReference = fStore.collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num);
 
-                Log.d("1234","Grade = "+selectedItemGrade + "num "+num+ " userid "+userId+" grade "+holder.grade.getSelectedItem());
-                Toast.makeText(context.getApplicationContext(),"Grade = "+selectedItemGrade+" Credit = "+selectedCredit+" GPA = "+selectedItemGPA,Toast.LENGTH_LONG).show();
+                user.put("subjectName",holder.subjectName.getText().toString());
+                user.put("subjectCode", holder.subjectCode.getText().toString());
+                user.put("number",holder.number.getText().toString());
+                user.put("Grade", holder.grade.getSelectedItem());
+                user.put("number",holder.number.getText().toString());
+                documentReference.set(user);
+                subjects.setGetMethodGrade(selectedItemGrade);
+
+//                subjects.setGetMethodGrade(selectedItemGrade);
+//                selectedItemGradeInt = position;
+//                Log.d("555","grade position inside = "+holder.grade.getAdapter().getItem(selectedItemGradeInt));
+//                user.put("subjectName",holder.subjectName.getText().toString());
+//                user.put("subjectCode", holder.subjectCode.getText().toString());
+//                user.put("Grade", holder.grade.getSelectedItem());
+//                user.put("number",holder.number.getText().toString());
+//                FirebaseFirestore.getInstance().collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num).update(user);
+
+               // Log.d("1234","Grade = "+selectedItemGrade + "num "+num+ " userid "+userId+" grade "+holder.grade.getSelectedItem());
+                //Toast.makeText(context.getApplicationContext(),"Grade = "+selectedItemGrade+" Credit = "+selectedCredit+" GPA = "+selectedItemGPA,Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -110,10 +197,18 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
                 selectedCredit = parent.getItemAtPosition(position).toString();
                 documentReference = fStore.collection("Subjects").document(userId).collection(num).document(num);
+                documentReference = fStore.collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num);
                 subjects.setGetMethodCredit(selectedCredit);
-
+                user.put("subjectName",holder.subjectName.getText().toString());
+                user.put("subjectCode", holder.subjectCode.getText().toString());
+                user.put("number",holder.number.getText().toString());
                 user.put("Credit",holder.credit.getSelectedItem());
                 documentReference.set(user);
+
+//                subjects.setGetMethodCredit(selectedCredit);
+//
+//                user.put("Credit",holder.credit.getSelectedItem());
+//                FirebaseFirestore.getInstance().collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num).update(user);
 
             }
 
@@ -130,10 +225,19 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
                 selectedItemGPA = parent.getItemAtPosition(position).toString();
                 documentReference = fStore.collection("Subjects").document(userId).collection(num).document(num);
+                documentReference = fStore.collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num);
                 subjects.setGetMethodGPA(selectedItemGPA);
-
+                user.put("subjectName",holder.subjectName.getText().toString());
+                user.put("subjectCode", holder.subjectCode.getText().toString());
+                user.put("number",holder.number.getText().toString());
                 user.put("Gpa",holder.gpa.getSelectedItem());
                 documentReference.set(user);
+
+
+//                subjects.setGetMethodGPA(selectedItemGPA);
+//
+//                user.put("Gpa",holder.gpa.getSelectedItem());
+//                FirebaseFirestore.getInstance().collection("Subjects").document(userId).collection("Semester").document(isValue).collection(num).document(num).update(user);
 
             }
 
@@ -145,8 +249,41 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
         subjects.setGetMethodGrade(holder.grade.getSelectedItem().toString());
         subjects.setGetMethodCredit(holder.credit.getSelectedItem().toString());
         subjects.setGetMethodGPA(holder.gpa.getSelectedItem().toString());
-        //Toast.makeText(context.getApplicationContext(),"Grade = "+selectedItemGrade+" Credit = "+selectedCredit+" GPA = "+selectedItemGPA,Toast.LENGTH_LONG).show();
-        Log.d("1234","Grade = "+selectedItemGrade+" Grade"+subjects.getGetMethodGrade());
+
+        holder.subjectName.setText(subjects.getSubjectName());
+        holder.subjectCode.setText(subjects.getSubjectCode());
+        for(int i =0; i<holder.grade.getAdapter().getCount(); i++){
+
+
+            String s = (String) holder.grade.getAdapter().getItem(i);
+            if (s.equals(subjects.getGetMethodGrade())){
+
+                holder.grade.setSelection(i);
+
+            }
+        }
+        for(int i =0; i<holder.credit.getAdapter().getCount(); i++){
+
+
+            String s = (String) holder.credit.getAdapter().getItem(i);
+            if (s.equals(subjects.getGetMethodCredit())){
+
+                holder.credit.setSelection(i);
+
+            }
+        }
+        for(int i =0; i<holder.gpa.getAdapter().getCount(); i++){
+
+
+            String s = (String) holder.gpa.getAdapter().getItem(i);
+            if (s.equals(subjects.getGetMethodGPA())){
+
+                holder.gpa.setSelection(i);
+
+            }
+        }
+
+
     }
 
     @Override

@@ -21,15 +21,20 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.nivacreation.gpa_analyzer.adapter.SemestersAdapter;
 import com.nivacreation.gpa_analyzer.adapter.SubjectsAdapter;
+import com.nivacreation.gpa_analyzer.adapter.SubjectsNewAdapter;
 import com.nivacreation.gpa_analyzer.model.Semesters;
 import com.nivacreation.gpa_analyzer.model.Subjects;
+import com.nivacreation.gpa_analyzer.model.SubjectsNew;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +47,12 @@ import static com.nivacreation.gpa_analyzer.R.layout.*;
 public class Subjects_Activity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 
     RecyclerView recyclerView;
+
     ArrayList<Subjects> subjectsArrayList;
+    ArrayList<SubjectsNew> subjectsNewArrayList;
+
     SubjectsAdapter subjectsAdapter;
+    SubjectsNewAdapter subjectsNewAdapter;
 
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
@@ -95,16 +104,87 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         }
 
         subjectsArrayList = new ArrayList<Subjects>();
+        subjectsNewArrayList = new ArrayList<SubjectsNew>();
 
         subjectsAdapter = new SubjectsAdapter(this,getMyList());
-        recyclerView.setAdapter(subjectsAdapter);
+        subjectsNewAdapter = new SubjectsNewAdapter(this, subjectsNewArrayList);
+
+        String checkValue = PreferenceManager.getDefaultSharedPreferences(this).getString("iGetSubDetail", "");
+
+        Log.d("1245"," checkValue "+checkValue);
+
+        //
+
+        if (checkValue.equals("*")){
+            recyclerView.setAdapter(subjectsAdapter);
+        }
+
+        if (checkValue.equals("#")){
+            recyclerView.setAdapter(subjectsNewAdapter);
+        }
+        eventChangeListner();
+        //eventChangeListner();
+
 
         evaluateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+
             }
         });
+
+
+    }
+
+    private void eventChangeListner() {
+
+        fStore = FirebaseFirestore.getInstance();
+        String userId = fAuth.getCurrentUser().getUid();
+
+        Log.d("111","sName "+sName);
+        String kk = sName.substring(sName.length()-1);
+
+        Subjects s;
+        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+
+        Log.d("123"," b "+b);
+        String nam = "courseCount"+kk;
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+
+        countGetValue = isShow;
+
+        if (isShow != null){
+            countValueToInt = Integer.parseInt(countGetValue);
+        }
+        sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+        for(int i=1; i<=countValueToInt; i++){
+            fStore.collection("Subjects").document(userId).collection("Semester")
+                    .document(sName).collection(String.valueOf(i)).orderBy("number",Query.Direction.ASCENDING)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+
+                            if(error != null){
+                                Log.e("12345",error.getMessage());
+                                return;
+                            }
+
+                            for (DocumentChange dc : value.getDocumentChanges()){
+
+                                if (dc.getType() == DocumentChange.Type.ADDED){
+
+                                    subjectsNewArrayList.add(dc.getDocument().toObject(SubjectsNew.class));
+
+                                }
+
+                                subjectsNewAdapter.notifyDataSetChanged();
+
+                            }
+                        }
+                    });
+        }
 
 
     }
@@ -307,27 +387,67 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         ArrayList<Subjects> subjects = new ArrayList<>();
 
         Subjects s;
-        //String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString("courseCount", "");
         String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
 
         Log.d("123"," b "+b);
         String nam = "courseCount"+kk;
         String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
 
-
-            countGetValue = isShow;
+        countGetValue = isShow;
 
         if (isShow != null){
             countValueToInt = Integer.parseInt(countGetValue);
         }
 
         for(int i=1; i<=countValueToInt; i++){
-
             s = new Subjects();
             s.setNumber(String.valueOf(i));
            subjects.add(s);
         }
         return subjects;
+    }
+
+    private void EventChangeListner() {
+        String userId = fAuth.getCurrentUser().getUid();
+        fStore = FirebaseFirestore.getInstance();
+        sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+        Log.d("111","sName "+sName);
+        String kk = sName.substring(sName.length()-1);
+        Subjects s;
+        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+
+        Log.d("123"," b "+b);
+        String nam = "courseCount"+kk;
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+
+        countGetValue = isShow;
+
+        if (isShow != null){
+            countValueToInt = Integer.parseInt(countGetValue);
+        }
+
+        for(int i=1; i<=countValueToInt; i++){
+            fStore.collection("Subjects").document(userId).collection("Semester").document(sName).collection(String.valueOf(i))
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+
+                            if(error != null){
+                                return;
+                            }
+
+                            for (DocumentChange dc : value.getDocumentChanges()){
+
+                                if (dc.getType() == DocumentChange.Type.ADDED){
+
+                                    subjectsArrayList.add(dc.getDocument().toObject(Subjects.class));
+                                }
+                                subjectsAdapter.notifyDataSetChanged();
+
+                            }
+                        }
+                    });
+        }
     }
 
     @Override

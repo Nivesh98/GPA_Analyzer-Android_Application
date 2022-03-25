@@ -75,11 +75,15 @@ public class SemestersAdapter extends RecyclerView.Adapter<SemestersAdapter.Seme
 
                     if(isShow.equals(k.trim())){
                         Intent intent = new Intent(context, Subjects_Activity.class);
+                        PreferenceManager
+                                .getDefaultSharedPreferences(context).edit().putString("iGetSubDetail", "#").apply();
                         intent.putExtra("SemesterName", semestersArrayList.get(position).getTitle());
                         context.startActivity(intent);
 
                     }else{
                         Intent intent = new Intent(context, SubjectDetails_Activity.class);
+                        PreferenceManager
+                                .getDefaultSharedPreferences(context).edit().putString("iGetSubDetail", "*").apply();
                         intent.putExtra("SemesterName", semestersArrayList.get(position).getTitle());
                         context.startActivity(intent);
                     }

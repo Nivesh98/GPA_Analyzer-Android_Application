@@ -6,9 +6,11 @@ public class Subjects {
 
     String number, getMethodGrade, getMethodCredit, getMethodGPA, subjectName, subjectCode;
 
-    ArrayList<String> grade = new ArrayList<>();
-    ArrayList<String> credit = new ArrayList<>();
-    ArrayList<String> gpa = new ArrayList<>();
+
+
+    ArrayList<String> Grade = new ArrayList<>();
+    ArrayList<String> Credit = new ArrayList<>();
+    ArrayList<String> Gpa = new ArrayList<>();
 
     public String getSubjectName() {
         return subjectName;
@@ -60,48 +62,48 @@ public class Subjects {
 
     public ArrayList<String> getGrade() {
 
-        grade.add("A+");
-        grade.add("A");
-        grade.add("A-");
-        grade.add("B+");
-        grade.add("B");
-        grade.add("B-");
-        grade.add("C+");
-        grade.add("C");
-        grade.add("C-");
-        grade.add("D");
-        grade.add("F");
+        Grade.add("A+");
+        Grade.add("A");
+        Grade.add("A-");
+        Grade.add("B+");
+        Grade.add("B");
+        Grade.add("B-");
+        Grade.add("C+");
+        Grade.add("C");
+        Grade.add("C-");
+        Grade.add("D");
+        Grade.add("F");
 
-        return grade;
+        return Grade;
     }
 
     public void setGrade(ArrayList<String> grade) {
-        this.grade = grade;
+        this.Grade = grade;
     }
 
     public ArrayList<String> getCredit() {
 
-        credit.add("3");
-        credit.add("2");
-        credit.add("1");
+        Credit.add("3");
+        Credit.add("2");
+        Credit.add("1");
 
-        return credit;
+        return Credit;
     }
 
     public void setCredit(ArrayList<String> credit) {
-        this.credit = credit;
+        this.Credit = credit;
     }
 
     public ArrayList<String> getGpa() {
 
-        gpa.add("GPA");
-        gpa.add("NGPA");
+        Gpa.add("GPA");
+        Gpa.add("NGPA");
 
-        return gpa;
+        return Gpa;
     }
 
     public void setGpa(ArrayList<String> gpa) {
-        this.gpa = gpa;
+        this.Gpa = gpa;
     }
 
    // public void get

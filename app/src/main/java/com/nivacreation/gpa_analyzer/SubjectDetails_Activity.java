@@ -93,6 +93,8 @@ public class SubjectDetails_Activity extends AppCompatActivity implements Gestur
 
                         Intent signInActivity = new Intent(SubjectDetails_Activity.this, Subjects_Activity.class);
 
+                        PreferenceManager
+                                .getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString("iGetSubDetail", "*").apply();
                         String num = "courseCount"+a;
                         Log.d("123", " a "+num.trim());
                         PreferenceManager.getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString("b", num.trim()).apply();
