@@ -126,6 +126,8 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         //eventChangeListner();
 
 
+        SubjectsNew s = new SubjectsNew();
+        Log.d("7896","grade = "+s.getGrade()+" credit = "+s.getCredit()+" gpa = "+s.getGpa()+" sub nam = "+s.getSubjectName()+" sub code = "+s.getSubjectCode());
         evaluateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
