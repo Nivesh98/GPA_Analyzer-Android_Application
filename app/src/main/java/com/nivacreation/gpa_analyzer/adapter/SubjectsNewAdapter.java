@@ -82,25 +82,33 @@ public class SubjectsNewAdapter extends RecyclerView.Adapter<SubjectsNewAdapter.
         }
         documentReference = fStore.collection("Subjects").document(userId)
                 .collection("Semester").document(isValue).collection(num).document(num);
+        holder.subjectCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+//                String n = holder.number.getText().toString();
+//                String code =holder.subjectCode.getText().toString();
+//                user.put("subjectCode",code );
+//                FirebaseFirestore.getInstance().collection("Subjects").document(userId).collection("Semester").document(isValue).collection(n).document(n).update(user);
+//                subjects.setSubjectCode(code);
+
+
+            }
+        });
         subjects.setSubjectName(holder.subjectName.getText().toString());
         subjects.setSubjectCode(holder.subjectCode.getText().toString());
 
         holder.grade.setAdapter(new ArrayAdapter<>(context.getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,subjects.getGradeArray()));
-        holder.grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
-                String selectedItemGrade = parent.getItemAtPosition(position).toString();
 
-                subjects.setGrade(selectedItemGrade);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         for(int i =0; i<holder.grade.getAdapter().getCount(); i++){
 
 
@@ -113,20 +121,7 @@ public class SubjectsNewAdapter extends RecyclerView.Adapter<SubjectsNewAdapter.
         }
 
         holder.credit.setAdapter(new ArrayAdapter<>(context.getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,subjects.getCreditArray()));
-        holder.credit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
-                String selectedCredit = parent.getItemAtPosition(position).toString();
 
-                subjects.setCredit(selectedCredit);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         for(int i =0; i<holder.credit.getAdapter().getCount(); i++){
 
 
@@ -139,20 +134,7 @@ public class SubjectsNewAdapter extends RecyclerView.Adapter<SubjectsNewAdapter.
         }
 
         holder.gpa.setAdapter(new ArrayAdapter<>(context.getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,subjects.getGpaArray()));
-        holder.gpa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
-                String selectedItemGPA = parent.getItemAtPosition(position).toString();
 
-                subjects.setGrade(selectedItemGPA);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         for(int i =0; i<holder.gpa.getAdapter().getCount(); i++){
 
 
@@ -163,6 +145,65 @@ public class SubjectsNewAdapter extends RecyclerView.Adapter<SubjectsNewAdapter.
 
             }
         }
+
+        holder.subjectName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        holder.gpa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
+                String selectedItemGPA = parent.getItemAtPosition(position).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        holder.credit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
+                String selectedCredit = parent.getItemAtPosition(position).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        holder.grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.GREEN);
+                String selectedItemGrade = parent.getItemAtPosition(position).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 

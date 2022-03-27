@@ -9,7 +9,9 @@
         android:roundIcon="@drawable/gpa"
         android:supportsRtl="true"
         android:theme="@style/Theme.GPA_ANALYZER">
-        <activity android:name=".SplashScreen_Activity"
+        <activity android:name=".ResultSheet"></activity>
+        <activity
+            android:name=".SplashScreen_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,8 +24,7 @@
         <activity android:name=".Semesters_Activity" />
         <activity android:name=".FirstHome_Activity" />
         <activity android:name=".SignIn_Activity" />
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
