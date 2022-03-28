@@ -63,7 +63,7 @@ public class FirstHome_Activity extends AppCompatActivity {
                     if(intCount >=1 && intCount<=10){
                         String countToString = count.getText().toString();
 
-                        Toast.makeText(FirstHome_Activity.this, "Semester Count = " +countToString, Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(FirstHome_Activity.this, "Semester Count = " +countToString, Toast.LENGTH_LONG).show();
 
                         Intent signInActivity = new Intent(FirstHome_Activity.this, Semesters_Activity.class);
                         PreferenceManager

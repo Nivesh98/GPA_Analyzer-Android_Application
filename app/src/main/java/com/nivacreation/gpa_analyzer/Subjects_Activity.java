@@ -331,7 +331,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("A")){
                             String v = value.getString("AV");
@@ -342,7 +342,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("A-")){
                             String v = value.getString("AMV");
@@ -353,7 +353,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B+")){
                             String v = value.getString("BPV");
@@ -364,7 +364,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B")){
                             String v = value.getString("BV");
@@ -375,7 +375,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B-")){
                             String v = value.getString("BMV");
@@ -386,7 +386,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C+")){
                             String v = value.getString("CPV");
@@ -397,7 +397,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C")){
                             String v = value.getString("CV");
@@ -408,7 +408,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C-")){
                             String v = value.getString("CMV");
@@ -419,7 +419,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("D+")){
                             String v = value.getString("DPV");
@@ -430,14 +430,14 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tots = cc*vc;
                             sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else {
 
                         }
 
                         totcs = totcs+ cr;
-                        Toast.makeText(Subjects_Activity.this, "tot cre  "+totcs,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Subjects_Activity.this, "tot cre  "+totcs,Toast.LENGTH_SHORT).show();
 
                         gpaValues = sums/totcs;
                         df.setRoundingMode(RoundingMode.UP);
@@ -451,7 +451,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             startActivity(intent);
                             finish();
                         }
-                        Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValues,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValues,Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -496,7 +496,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("A")){
                             String v = value.getString("AV");
@@ -507,7 +507,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("A-")){
                             String v = value.getString("AMV");
@@ -518,7 +518,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B+")){
                             String v = value.getString("BPV");
@@ -529,7 +529,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B")){
                             String v = value.getString("BV");
@@ -540,7 +540,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B-")){
                             String v = value.getString("BMV");
@@ -551,7 +551,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C+")){
                             String v = value.getString("CPV");
@@ -562,7 +562,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C")){
                             String v = value.getString("CV");
@@ -573,7 +573,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C-")){
                             String v = value.getString("CMV");
@@ -584,7 +584,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("D+")){
                             String v = value.getString("DPV");
@@ -595,14 +595,14 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             tot = cc*vc;
                             sum = sum +tot;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
 
                         }else {
 
                         }
 
                         totC = totC+ cr;
-                        Toast.makeText(Subjects_Activity.this, "tot cre  "+totC,Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Subjects_Activity.this, "tot cre  "+totC,Toast.LENGTH_SHORT).show();
 
                         gpaValue = sum/totC;
                         df.setRoundingMode(RoundingMode.UP);
@@ -615,7 +615,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             intent.putExtra("gpaValue",g);
                             startActivity(intent);
                         }
-                        Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValue,Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValue,Toast.LENGTH_SHORT).show();
                     }
 
 
