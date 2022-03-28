@@ -40,6 +40,8 @@ import com.nivacreation.gpa_analyzer.model.SubjectsNew;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +62,8 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
 
+    private static final DecimalFormat df = new DecimalFormat("0.0000");
+
     Map<String,Object> user = new HashMap<>();
 
     static Subjects subject;
@@ -74,7 +78,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
     Button evaluateBtn;
 
-    double sum = 0, tot = 0, totC =0, gpaValue =0;
+    double sum = 0,sums=0,tots=0,totcs=0,gpaValues=0, tot = 0, totC =0, gpaValue =0;
 
     GetGradePointValue getGradePointValue;
     //for swip
@@ -140,6 +144,11 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                 totC =0;
                 gpaValue =0;
 
+                sums =0;
+                totcs =0;
+                tots =0;
+                gpaValues=0;
+
             }
         });
 
@@ -149,19 +158,27 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
     }
 
     private void getResult() {
+        sum = 0;
+        tot = 0;
+        totC =0;
+        gpaValue =0;
         fStore = FirebaseFirestore.getInstance();
         String userId = fAuth.getCurrentUser().getUid();
 
         Log.d("111","sName "+sName);
         String kk = sName.substring(sName.length()-1);
 
-        double kkk = Double.parseDouble(kk);
-        for (int ii=1; ii<=kkk; ii++){
-            String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+        int kkk = Integer.parseInt(kk);
 
-            Log.d("123"," b "+b);
-            String nam = "courseCount"+kk;
+        Log.d("1111", " kkk "+kkk);
+        for (int ii=1; ii<=kkk; ii++){
+            //String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+
+            //Log.d("123"," b "+b);
+            String nam = "courseCount"+ii;
             String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+            Log.d("1111", " ii "+ii+" isShow "+isShow);
+           // Log.d("1111","isShowk "+ isShowk +" kkk = "+kkk+ " isShow "+isShow+" ii "+ii);
 
             countGetValue = isShow;
 
@@ -205,7 +222,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                                 subNum[a] = sNum;
                                 subCredit[a] = sCre;
 
-                                //getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
+                                getDataFromDatabaseSG(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
 
                                 if (finalI==countValueToInt){
                                     return;
@@ -219,51 +236,59 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                 }
 
                 if (ii==kkk){
-                    sum = 0;
-                    tot = 0;
-                    totC =0;
-                    gpaValue =0;
-                    for(int i=1; i<=countValueToInt; i++){
+                    sums = 0;
+                    tots = 0;
+                    totcs =0;
+                    gpaValues =0;
+                    String namk = "courseCount"+kkk;
+                    String isShowk = PreferenceManager.getDefaultSharedPreferences(this).getString(namk.trim(), "");
 
-                        DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
-                                .document(sName).collection(String.valueOf(i)).document(String.valueOf(i));
-                        int finalI = i;
+                    Log.d("1111", "ii==kkk kkk "+kkk+" isShowk "+isShowk+ " ii "+ii+" isShow "+isShow);
+                    if (isShowk != null){
+                        int hh = Integer.parseInt(isShowk);
+                        for(int i=1; i<=hh; i++){
 
-                        documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable @org.jetbrains.annotations
-                                    .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                            DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
+                                    .document("Semester "+ii).collection(String.valueOf(i)).document(String.valueOf(i));
+                            int finalI = i;
 
-                                if (value != null && value.exists()) {
+                            documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable @org.jetbrains.annotations
+                                        .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
 
-                                    String sN = value.getString("subjectName");
-                                    String sC = value.getString("subjectCode");
-                                    String sNum = value.getString("number");
-                                    String sGra = value.getString("Grade");
-                                    String sCre = value.getString("Credit");
-                                    String sGpa = value.getString("Gpa");
+                                    if (value != null && value.exists()) {
 
-                                    int a = finalI -1;
-                                    int z = y;
-                                    subName[a] = sN;
-                                    subCode[a] = sC;
-                                    subGPA[a] = sGpa;
-                                    subGrade[a] = sGra;
-                                    subNum[a] = sNum;
-                                    subCredit[a] = sCre;
+                                        String sN = value.getString("subjectName");
+                                        String sC = value.getString("subjectCode");
+                                        String sNum = value.getString("number");
+                                        String sGra = value.getString("Grade");
+                                        String sCre = value.getString("Credit");
+                                        String sGpa = value.getString("Gpa");
 
-                                    getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
+                                        int a = finalI -1;
+                                        int z = y;
+                                        subName[a] = sN;
+                                        subCode[a] = sC;
+                                        subGPA[a] = sGpa;
+                                        subGrade[a] = sGra;
+                                        subNum[a] = sNum;
+                                        subCredit[a] = sCre;
 
-                                    if (finalI==countValueToInt){
-                                        return;
+                                        getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
+
+                                        if (finalI==hh){
+                                            return;
+
+                                        }
 
                                     }
-
                                 }
-                            }
-                        });
+                            });
 
+                        }
                     }
+
 
                 }
             }
@@ -300,10 +325,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("A")){
                             String v = value.getString("AV");
@@ -311,10 +336,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("A-")){
                             String v = value.getString("AMV");
@@ -322,10 +347,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B+")){
                             String v = value.getString("BPV");
@@ -333,10 +358,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B")){
                             String v = value.getString("BV");
@@ -344,10 +369,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("B-")){
                             String v = value.getString("BMV");
@@ -355,10 +380,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C+")){
                             String v = value.getString("CPV");
@@ -366,10 +391,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C")){
                             String v = value.getString("CV");
@@ -377,10 +402,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("C-")){
                             String v = value.getString("CMV");
@@ -388,10 +413,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else if (g.equals("D+")){
                             String v = value.getString("DPV");
@@ -399,29 +424,30 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             double cc = Double.parseDouble(c);
                             double vc = Double.parseDouble(v);
 
-                            tot = cc*vc;
-                            sum = sum +tot;
+                            tots = cc*vc;
+                            sums = sums +tots;
 
-                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
 
                         }else {
 
                         }
 
-                        totC = totC+ cr;
-                        Toast.makeText(Subjects_Activity.this, "tot cre  "+totC,Toast.LENGTH_SHORT).show();
+                        totcs = totcs+ cr;
+                        Toast.makeText(Subjects_Activity.this, "tot cre  "+totcs,Toast.LENGTH_SHORT).show();
 
-                        gpaValue = sum/totC;
-                        getGradePointValue.setGradeValue(gpaValue);
+                        gpaValues = sums/totcs;
+                        df.setRoundingMode(RoundingMode.UP);
+                        getGradePointValue.setGradeValue(gpaValues);
                         if (a==z){
                             //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
                             PreferenceManager
-                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaVal", String.valueOf(gpaValue)).apply();
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaVal", String.valueOf(df.format(gpaValues))).apply();
                             Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
                             intent.putExtra("gpaValue",g);
                             startActivity(intent);
                         }
-                        Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValue,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValues,Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -575,11 +601,12 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                         Toast.makeText(Subjects_Activity.this, "tot cre  "+totC,Toast.LENGTH_SHORT).show();
 
                         gpaValue = sum/totC;
+                        df.setRoundingMode(RoundingMode.UP);
                         getGradePointValue.setGradeValue(gpaValue);
                         if (a==z){
                             //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
                             PreferenceManager
-                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaVal", String.valueOf(gpaValue)).apply();
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaValFinal", String.valueOf(df.format(gpaValue))).apply();
                             Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
                             intent.putExtra("gpaValue",g);
                             startActivity(intent);

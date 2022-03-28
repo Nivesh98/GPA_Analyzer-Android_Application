@@ -21,8 +21,10 @@ public class ResultSheet extends AppCompatActivity {
         fgpaValue = findViewById(R.id.fgpaValue);
 
         String g = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString("isGpaVal", "");
+        String fg = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString("isGpaValFinal", "");
         //String s = getIntent().getStringExtra("gpaValue");
         gpaValue.setText(g);
+        fgpaValue.setText(fg);
        // Toast.makeText(this, s,Toast.LENGTH_SHORT).show();
     }
 }
