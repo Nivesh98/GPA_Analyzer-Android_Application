@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class ResultSheet extends AppCompatActivity {
 
-    TextView gpaValue;
+    TextView gpaValue, ygpaValue, fgpaValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,9 +17,12 @@ public class ResultSheet extends AppCompatActivity {
         setContentView(R.layout.activity_result_sheet);
 
         gpaValue = findViewById(R.id.gpaValue);
+        ygpaValue = findViewById(R.id.ygpaValue);
+        fgpaValue = findViewById(R.id.fgpaValue);
+
         String g = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString("isGpaVal", "");
-        String s = getIntent().getStringExtra("gpaValue");
+        //String s = getIntent().getStringExtra("gpaValue");
         gpaValue.setText(g);
-        Toast.makeText(this, s,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, s,Toast.LENGTH_SHORT).show();
     }
 }

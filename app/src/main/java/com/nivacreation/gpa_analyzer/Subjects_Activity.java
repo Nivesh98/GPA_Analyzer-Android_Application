@@ -135,14 +135,6 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
             public void onClick(View v) {
 
                getResult();
-
-               String g = PreferenceManager.getDefaultSharedPreferences(Subjects_Activity.this).getString("isGpaVal", "");
-               if (!g.equals(null)){
-//                   Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
-//                   intent.putExtra("gpaValue",g);
-//                   startActivity(intent);
-               }
-
                 sum = 0;
                 tot = 0;
                 totC =0;
@@ -163,68 +155,121 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         Log.d("111","sName "+sName);
         String kk = sName.substring(sName.length()-1);
 
-        Subjects s;
-        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+        double kkk = Double.parseDouble(kk);
+        for (int ii=1; ii<=kkk; ii++){
+            String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
 
-        Log.d("123"," b "+b);
-        String nam = "courseCount"+kk;
-        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+            Log.d("123"," b "+b);
+            String nam = "courseCount"+kk;
+            String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
 
-        countGetValue = isShow;
+            countGetValue = isShow;
 
-        if (isShow != null){
-            countValueToInt = Integer.parseInt(countGetValue);
-        }
-        sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+            if (isShow != null){
+                countValueToInt = Integer.parseInt(countGetValue);
+                sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
 
-        String[] subName = new String[countValueToInt];
-        String[] subCode = new String[countValueToInt];
-        String[] subGrade = new String[countValueToInt];
-        String[] subCredit = new String[countValueToInt];
-        String[] subGPA = new String[countValueToInt];
-        String[] subNum = new String[countValueToInt];
-        final int y = countValueToInt-1;
-        for(int i=1; i<=countValueToInt; i++){
+                String[] subName = new String[countValueToInt];
+                String[] subCode = new String[countValueToInt];
+                String[] subGrade = new String[countValueToInt];
+                String[] subCredit = new String[countValueToInt];
+                String[] subGPA = new String[countValueToInt];
+                String[] subNum = new String[countValueToInt];
+                final int y = countValueToInt-1;
+                for(int i=1; i<=countValueToInt; i++){
 
-            DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
-                    .document(sName).collection(String.valueOf(i)).document(String.valueOf(i));
-            int finalI = i;
+                    DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
+                            .document("Semester "+ii).collection(String.valueOf(i)).document(String.valueOf(i));
+                    int finalI = i;
 
-            documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable @org.jetbrains.annotations
-                        .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                    documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable @org.jetbrains.annotations
+                                .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
 
-                    if (value != null && value.exists()) {
+                            if (value != null && value.exists()) {
 
-                        String sN = value.getString("subjectName");
-                        String sC = value.getString("subjectCode");
-                        String sNum = value.getString("number");
-                        String sGra = value.getString("Grade");
-                        String sCre = value.getString("Credit");
-                        String sGpa = value.getString("Gpa");
+                                String sN = value.getString("subjectName");
+                                String sC = value.getString("subjectCode");
+                                String sNum = value.getString("number");
+                                String sGra = value.getString("Grade");
+                                String sCre = value.getString("Credit");
+                                String sGpa = value.getString("Gpa");
 
-                        int a = finalI -1;
-                        int z = y;
-                        subName[a] = sN;
-                        subCode[a] = sC;
-                        subGPA[a] = sGpa;
-                        subGrade[a] = sGra;
-                        subNum[a] = sNum;
-                        subCredit[a] = sCre;
+                                int a = finalI -1;
+                                int z = y;
+                                subName[a] = sN;
+                                subCode[a] = sC;
+                                subGPA[a] = sGpa;
+                                subGrade[a] = sGra;
+                                subNum[a] = sNum;
+                                subCredit[a] = sCre;
 
-                            getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
+                                //getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
 
-                            if (finalI==countValueToInt){
-                                return;
+                                if (finalI==countValueToInt){
+                                    return;
+
+                                }
 
                             }
+                        }
+                    });
+
+                }
+
+                if (ii==kkk){
+                    sum = 0;
+                    tot = 0;
+                    totC =0;
+                    gpaValue =0;
+                    for(int i=1; i<=countValueToInt; i++){
+
+                        DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
+                                .document(sName).collection(String.valueOf(i)).document(String.valueOf(i));
+                        int finalI = i;
+
+                        documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable @org.jetbrains.annotations
+                                    .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+
+                                if (value != null && value.exists()) {
+
+                                    String sN = value.getString("subjectName");
+                                    String sC = value.getString("subjectCode");
+                                    String sNum = value.getString("number");
+                                    String sGra = value.getString("Grade");
+                                    String sCre = value.getString("Credit");
+                                    String sGpa = value.getString("Gpa");
+
+                                    int a = finalI -1;
+                                    int z = y;
+                                    subName[a] = sN;
+                                    subCode[a] = sC;
+                                    subGPA[a] = sGpa;
+                                    subGrade[a] = sGra;
+                                    subNum[a] = sNum;
+                                    subCredit[a] = sCre;
+
+                                    getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
+
+                                    if (finalI==countValueToInt){
+                                        return;
+
+                                    }
+
+                                }
+                            }
+                        });
 
                     }
+
                 }
-            });
+            }
 
         }
+
     }
 
     private void getDataFromDatabase(String[] subName, String[] subCode, String[] subGPA, String[] subGrade, String[] subNum, String[] subCredit, int a, int z) {
@@ -387,6 +432,169 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         });
                       //String k = subGrade[a];
            // Toast.makeText(this," k = "+k+" grade value = ",Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void getDataFromDatabaseSG(String[] subName, String[] subCode, String[] subGPA, String[] subGrade, String[] subNum, String[] subCredit, int a, int z) {
+
+        fStore = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        String userId = fAuth.getCurrentUser().getUid();
+
+        DocumentReference documentReference = fStore.collection("GradesValue").document(userId);
+        documentReference.addSnapshotListener( Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable @org.jetbrains.annotations
+                    .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+
+                if (value != null && value.exists()) {
+
+                    String g = subGrade[a];
+                    String gpa = subGPA[a];
+                    String cret = subCredit[a];
+                    double cr = Double.parseDouble(cret);
+
+                    if (gpa.equals("GPA")){
+
+                        if (g.equals("A+")){
+
+                            String v = value.getString("APV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("A")){
+                            String v = value.getString("AV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("A-")){
+                            String v = value.getString("AMV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("B+")){
+                            String v = value.getString("BPV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("B")){
+                            String v = value.getString("BV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("B-")){
+                            String v = value.getString("BMV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("C+")){
+                            String v = value.getString("CPV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("C")){
+                            String v = value.getString("CV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("C-")){
+                            String v = value.getString("CMV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("D+")){
+                            String v = value.getString("DPV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            tot = cc*vc;
+                            sum = sum +tot;
+
+                            Toast.makeText(Subjects_Activity.this, "sum "+sum,Toast.LENGTH_SHORT).show();
+
+                        }else {
+
+                        }
+
+                        totC = totC+ cr;
+                        Toast.makeText(Subjects_Activity.this, "tot cre  "+totC,Toast.LENGTH_SHORT).show();
+
+                        gpaValue = sum/totC;
+                        getGradePointValue.setGradeValue(gpaValue);
+                        if (a==z){
+                            //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
+                            PreferenceManager
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaVal", String.valueOf(gpaValue)).apply();
+                            Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
+                            intent.putExtra("gpaValue",g);
+                            startActivity(intent);
+                        }
+                        Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValue,Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+
+                }
+            }
+        });
+        //String k = subGrade[a];
+        // Toast.makeText(this," k = "+k+" grade value = ",Toast.LENGTH_SHORT).show();
 
     }
 
