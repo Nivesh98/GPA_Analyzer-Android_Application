@@ -167,6 +167,8 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
                 user.put("subjectCode", holder.subjectCode.getText().toString());
                 user.put("number",holder.number.getText().toString());
                 user.put("Grade", holder.grade.getSelectedItem());
+                user.put("Credit",holder.credit.getSelectedItem());
+                user.put("Gpa",holder.gpa.getSelectedItem());
                 user.put("number",holder.number.getText().toString());
                 documentReference.set(user);
                 subjects.setGetMethodGrade(selectedItemGrade);
@@ -203,6 +205,8 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
                 user.put("subjectCode", holder.subjectCode.getText().toString());
                 user.put("number",holder.number.getText().toString());
                 user.put("Credit",holder.credit.getSelectedItem());
+                user.put("Grade", holder.grade.getSelectedItem());
+                user.put("Gpa",holder.gpa.getSelectedItem());
                 documentReference.set(user);
 
 //                subjects.setGetMethodCredit(selectedCredit);
@@ -231,6 +235,8 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
                 user.put("subjectCode", holder.subjectCode.getText().toString());
                 user.put("number",holder.number.getText().toString());
                 user.put("Gpa",holder.gpa.getSelectedItem());
+                user.put("Credit",holder.credit.getSelectedItem());
+                user.put("Grade", holder.grade.getSelectedItem());
                 documentReference.set(user);
 
 

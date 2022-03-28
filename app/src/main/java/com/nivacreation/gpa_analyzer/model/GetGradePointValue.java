@@ -14,11 +14,14 @@ import java.util.concurrent.Executor;
 
 public class GetGradePointValue {
 
-    String grade;
     double gradeValue;
 
     public double getGradeValue() {
 
         return gradeValue;
+    }
+
+    public void setGradeValue(double gradeValue) {
+        this.gradeValue = gradeValue;
     }
 }

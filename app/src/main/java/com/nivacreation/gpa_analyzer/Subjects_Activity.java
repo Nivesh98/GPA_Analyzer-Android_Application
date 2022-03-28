@@ -74,10 +74,9 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
     Button evaluateBtn;
 
-    double sum = 0, tot = 0, totC =0, gpaValue =0
-            , getgpaValue;
+    double sum = 0, tot = 0, totC =0, gpaValue =0;
 
-
+    GetGradePointValue getGradePointValue;
     //for swip
     private static final String TAG = "Swipe Position";
     private float x1, x2, y1, y2;
@@ -88,6 +87,8 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_subjects);
+
+        getGradePointValue = new GetGradePointValue();
 
         this.gestureDetector = new GestureDetector(Subjects_Activity.this,this);
 
@@ -133,8 +134,19 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
             @Override
             public void onClick(View v) {
 
-                getResult();
+               getResult();
 
+               String g = PreferenceManager.getDefaultSharedPreferences(Subjects_Activity.this).getString("isGpaVal", "");
+               if (!g.equals(null)){
+//                   Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
+//                   intent.putExtra("gpaValue",g);
+//                   startActivity(intent);
+               }
+
+                sum = 0;
+                tot = 0;
+                totC =0;
+                gpaValue =0;
 
             }
         });
@@ -142,14 +154,6 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
 
 
-    }
-
-    public double getGetgpaValue() {
-        return getgpaValue;
-    }
-
-    public void setGetgpaValue(double getgpaValue) {
-        this.getgpaValue = getgpaValue;
     }
 
     private void getResult() {
@@ -179,12 +183,13 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         String[] subCredit = new String[countValueToInt];
         String[] subGPA = new String[countValueToInt];
         String[] subNum = new String[countValueToInt];
-
+        final int y = countValueToInt-1;
         for(int i=1; i<=countValueToInt; i++){
 
             DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
                     .document(sName).collection(String.valueOf(i)).document(String.valueOf(i));
             int finalI = i;
+
             documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable @org.jetbrains.annotations
@@ -200,6 +205,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                         String sGpa = value.getString("Gpa");
 
                         int a = finalI -1;
+                        int z = y;
                         subName[a] = sN;
                         subCode[a] = sC;
                         subGPA[a] = sGpa;
@@ -207,10 +213,9 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                         subNum[a] = sNum;
                         subCredit[a] = sCre;
 
-                            getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a);
+                            getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
 
                             if (finalI==countValueToInt){
-                                Toast.makeText(Subjects_Activity.this,"gpaaaaaaaaaa Value = "+getGetgpaValue(),Toast.LENGTH_SHORT).show();
                                 return;
 
                             }
@@ -222,7 +227,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         }
     }
 
-    private void getDataFromDatabase(String[] subName, String[] subCode, String[] subGPA, String[] subGrade, String[] subNum, String[] subCredit, int a) {
+    private void getDataFromDatabase(String[] subName, String[] subCode, String[] subGPA, String[] subGrade, String[] subNum, String[] subCredit, int a, int z) {
 
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
@@ -362,14 +367,15 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                         Toast.makeText(Subjects_Activity.this, "tot cre  "+totC,Toast.LENGTH_SHORT).show();
 
                         gpaValue = sum/totC;
-                        setGetgpaValue(gpaValue);
-
-//                        if (countValueToInt==(a+1)){
-//                            Intent intent = new Intent(Subjects_Activity.this, SubjectDetails_Activity.class);
-//                            intent.putExtra("gpaValue", gpaValue);
-//                            startActivity(intent);
-//                        }
-
+                        getGradePointValue.setGradeValue(gpaValue);
+                        if (a==z){
+                            //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
+                            PreferenceManager
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaVal", String.valueOf(gpaValue)).apply();
+                            Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
+                            intent.putExtra("gpaValue",g);
+                            startActivity(intent);
+                        }
                         Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValue,Toast.LENGTH_SHORT).show();
                     }
 
