@@ -251,6 +251,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
                                     .document("Semester "+ii).collection(String.valueOf(i)).document(String.valueOf(i));
                             int finalI = i;
+                            int jjj = ii;
 
                             documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
                                 @Override
@@ -275,7 +276,9 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                                         subNum[a] = sNum;
                                         subCredit[a] = sCre;
 
-                                        getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z);
+                                        String jj = "Semester "+String.valueOf(jjj);
+
+                                        getDataFromDatabase(subName,subCode,subGPA,subGrade, subNum, subCredit,a,z,jj);
 
                                         if (finalI==hh){
                                             return;
@@ -297,7 +300,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
     }
 
-    private void getDataFromDatabase(String[] subName, String[] subCode, String[] subGPA, String[] subGrade, String[] subNum, String[] subCredit, int a, int z) {
+    private void getDataFromDatabase(String[] subName, String[] subCode, String[] subGPA, String[] subGrade, String[] subNum, String[] subCredit, int a, int z, String jj) {
 
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
@@ -442,10 +445,11 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                         if (a==z){
                             //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
                             PreferenceManager
-                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaVal", String.valueOf(df.format(gpaValues))).apply();
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaVal"+jj, String.valueOf(df.format(gpaValues))).apply();
                             Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
                             intent.putExtra("gpaValue",g);
                             startActivity(intent);
+                            finish();
                         }
                         Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValues,Toast.LENGTH_SHORT).show();
                     }
