@@ -83,10 +83,11 @@ public class SubjectDetails_Activity extends AppCompatActivity implements Gestur
             @Override
             public void onClick(View v) {
 
+                String uid = fAuth.getCurrentUser().getUid();
 
                 if (!editText.getText().toString().isEmpty()){
                     PreferenceManager
-                            .getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString("subjectDetails"+b, k.trim()).apply();
+                            .getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString(uid+"subjectDetails"+b, k.trim()).apply();
                     int intCount = Integer.parseInt(editText.getText().toString());
                     if(intCount >=1 && intCount<=15){
                         String countToString = editText.getText().toString();
@@ -94,12 +95,12 @@ public class SubjectDetails_Activity extends AppCompatActivity implements Gestur
                         Intent signInActivity = new Intent(SubjectDetails_Activity.this, Subjects_Activity.class);
 
                         PreferenceManager
-                                .getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString("iGetSubDetail", "*").apply();
+                                .getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString(uid+"iGetSubDetail", "*").apply();
                         String num = "courseCount"+a;
                         Log.d("123", " a "+num.trim());
-                        PreferenceManager.getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString("b", num.trim()).apply();
+                        PreferenceManager.getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString(uid+"b", num.trim()).apply();
                         PreferenceManager
-                                .getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString(num.trim(), countToString).apply();
+                                .getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString(uid+num.trim(), countToString).apply();
 //                        PreferenceManager.getDefaultSharedPreferences(SubjectDetails_Activity.this).edit().putString("courseCount", countToString).apply();
 
                         startActivity(signInActivity);

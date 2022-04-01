@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+      //  String uid= mAuth.getCurrentUser().getUid();
+
        isShow = PreferenceManager
                 .getDefaultSharedPreferences(MainActivity.this).getString("semesterDetail", "Empty");
 

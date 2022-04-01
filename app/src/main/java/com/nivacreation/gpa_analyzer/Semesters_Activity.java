@@ -267,7 +267,8 @@ public class Semesters_Activity extends AppCompatActivity implements GestureDete
         Semesters s;
 
 
-        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString("isShow", "");
+        String uid = fAuth.getCurrentUser().getUid();
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(uid+"isShow", "");
 
         if (isShow != ""){
             String countGetValue = isShow;

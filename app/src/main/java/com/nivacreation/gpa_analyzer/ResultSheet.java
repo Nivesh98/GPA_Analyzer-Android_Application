@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.collection.LLRBNode;
 
 import java.math.RoundingMode;
@@ -25,7 +26,14 @@ public class ResultSheet extends AppCompatActivity {
     TextView classValue, classStatus;
     ImageView classImage;
 
+    private FirebaseAuth mAuth;
+
     String sName;
+
+    double gg;
+    double fgg;
+
+    double ygg;
 
     private static final DecimalFormat df = new DecimalFormat("0.0000");
 
@@ -33,6 +41,8 @@ public class ResultSheet extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_sheet);
+
+        mAuth = FirebaseAuth.getInstance();
 
         gpaValue = findViewById(R.id.gpaValue);
         ygpaValue = findViewById(R.id.ygpaValue);
@@ -42,36 +52,62 @@ public class ResultSheet extends AppCompatActivity {
         classStatus = findViewById(R.id.classStatus);
         classImage = findViewById(R.id.classImg);
 
+        String uid = mAuth.getCurrentUser().getUid();
+
         PreferenceManager
-                .getDefaultSharedPreferences(ResultSheet.this).edit().putString("iGetSubDetail", "#").apply();
-        sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+                .getDefaultSharedPreferences(ResultSheet.this).edit().putString(uid+"iGetSubDetail", "#").apply();
+        sName = PreferenceManager.getDefaultSharedPreferences(this).getString(uid+"sName", "");
         Log.d("111","sName "+sName);
         String kk = sName.substring(sName.length()-1);
         int semNum = Integer.parseInt(kk);
 
-        String g = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString("isGpaVal"+"Semester "+kk, "");
-        String fg = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString("isGpaValFinal", "");
+        String g = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaVal"+"Semester "+kk, "");
+        String fg = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaValFinal", "");
+
+        String yg = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaValYGPA"+"Semester "+kk, "");
+
+        Log.d("963","g = "+g+" fg = "+fg);
+
+        if (!yg.equals("")){
+            ygg = Double.parseDouble(yg);
+        }
+
+        Log.d("753","ygpa = "+ygg+" yg "+yg);
+        if(!g.equals("")){
+            gg = Double.parseDouble(g);
+        }
+
+        if (!fg.equals("")){
+            fgg = Double.parseDouble(fg);
+        }
 
         if ((semNum%2)==1){
-            ygpaValue.setText(g);
+            //df.setRoundingMode(RoundingMode.UP);
+            ygpaValue.setText(df.format(gg));
+            Log.d("963"," gg ="+gg);
         }else{
 
             int pv = semNum-1;
             String v = String.valueOf(pv);
-            String gpv = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString("isGpaVal"+"Semester "+v, "");
+            String gpv = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaVal"+"Semester "+v, "");
             double psv = Double.parseDouble(g);
             double sv = Double.parseDouble(gpv);
 
             double t = (psv+sv)/2;
-            df.setRoundingMode(RoundingMode.UP);
-            ygpaValue.setText(String.valueOf(df.format(t)));
+            //df.setRoundingMode(RoundingMode.UP);
+            Log.d("963"," yGpa = "+t);
+            ygpaValue.setText(String.valueOf(df.format(ygg)));
 
         }
-        gpaValue.setText(g);
-        fgpaValue.setText(fg);
+       // df.setRoundingMode(RoundingMode.UP);
+        gpaValue.setText(df.format(gg));
+        fgpaValue.setText(df.format(fgg));
+
+        Log.d("963"," sgpa ="+gg);
+        Log.d("963"," fgpa = "+fgg);
 
         double finClass = Double.parseDouble(fg);
-        df.setRoundingMode(RoundingMode.UP);
+       // df.setRoundingMode(RoundingMode.UP);
 
         if (finClass>=3.7000){
 

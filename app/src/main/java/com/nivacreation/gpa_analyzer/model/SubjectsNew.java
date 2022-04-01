@@ -69,7 +69,7 @@ public class SubjectsNew {
         GradeArray.add("C+");
         GradeArray.add("C");
         GradeArray.add("C-");
-        GradeArray.add("D");
+        GradeArray.add("D+");
         GradeArray.add("F");
 
         return GradeArray;
@@ -80,6 +80,12 @@ public class SubjectsNew {
         CreditArray.add("3");
         CreditArray.add("2");
         CreditArray.add("1");
+        CreditArray.add("4");
+        CreditArray.add("5");
+        CreditArray.add("6");
+        CreditArray.add("7");
+        CreditArray.add("8");
+        CreditArray.add("9");
 
         return CreditArray;
     }

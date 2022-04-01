@@ -89,7 +89,7 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.Subjec
         subjects = subjectsArrayList.get(position);
         String num = subjects.getNumber();
 
-        String isShow = PreferenceManager.getDefaultSharedPreferences(context).getString("sName", "");
+        String isShow = PreferenceManager.getDefaultSharedPreferences(context).getString(userId+"sName", "");
 
         if (isShow != null){
             isValue = isShow;

@@ -71,7 +71,7 @@ public class Subjects {
         Grade.add("C+");
         Grade.add("C");
         Grade.add("C-");
-        Grade.add("D");
+        Grade.add("D+");
         Grade.add("F");
 
         return Grade;
@@ -86,6 +86,12 @@ public class Subjects {
         Credit.add("3");
         Credit.add("2");
         Credit.add("1");
+        Credit.add("4");
+        Credit.add("5");
+        Credit.add("6");
+        Credit.add("7");
+        Credit.add("8");
+        Credit.add("9");
 
         return Credit;
     }

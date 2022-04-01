@@ -78,7 +78,10 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
     Button evaluateBtn;
 
-    double sum = 0,sums=0,tots=0,totcs=0,gpaValues=0, tot = 0, totC =0, gpaValue =0;
+    double sum = 0,sums=0,sumss=0,
+            tots=0,totcs=0,totcss=0,totss=0,
+            gpaValues=0,gpaValuess=0,
+            tot = 0, totC =0, gpaValue =0;
 
     GetGradePointValue getGradePointValue;
     //for swip
@@ -107,7 +110,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         fAuth = FirebaseAuth.getInstance();
         String userId = fAuth.getCurrentUser().getUid();
 
-        sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+        sName = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"sName", "");
 
         if (fAuth.getCurrentUser().getUid() != null){
             FirebaseFirestore.getInstance().collection("Subjects").document(userId.trim()).delete();
@@ -119,7 +122,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         subjectsAdapter = new SubjectsAdapter(this,getMyList());
         subjectsNewAdapter = new SubjectsNewAdapter(this, subjectsNewArrayList);
 
-        String checkValue = PreferenceManager.getDefaultSharedPreferences(this).getString("iGetSubDetail", "");
+        String checkValue = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"iGetSubDetail", "");
 
         Log.d("1245"," checkValue "+checkValue);
 
@@ -138,7 +141,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
             @Override
             public void onClick(View v) {
 
-               getResult();
+                getResult();
                 sum = 0;
                 tot = 0;
                 totC =0;
@@ -149,6 +152,11 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                 tots =0;
                 gpaValues=0;
 
+                sumss =0;
+                totcss =0;
+                totss =0;
+                gpaValuess=0;
+
             }
         });
 
@@ -158,6 +166,8 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
     }
 
     private void getResult() {
+
+        Log.d("852","Inside getResult Method");
         sum = 0;
         tot = 0;
         totC =0;
@@ -172,19 +182,22 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
         Log.d("1111", " kkk "+kkk);
         for (int ii=1; ii<=kkk; ii++){
+
+            Log.d("852","Inside getResult Method - for loop");
             //String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
 
             //Log.d("123"," b "+b);
             String nam = "courseCount"+ii;
-            String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+            String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+nam.trim(), "");
             Log.d("1111", " ii "+ii+" isShow "+isShow);
            // Log.d("1111","isShowk "+ isShowk +" kkk = "+kkk+ " isShow "+isShow+" ii "+ii);
 
             countGetValue = isShow;
 
             if (isShow != null){
+                Log.d("852","Inside getResult Method - for loop - if function");
                 countValueToInt = Integer.parseInt(countGetValue);
-                sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+                sName = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"sName", "");
 
                 String[] subName = new String[countValueToInt];
                 String[] subCode = new String[countValueToInt];
@@ -194,6 +207,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                 String[] subNum = new String[countValueToInt];
                 final int y = countValueToInt-1;
                 for(int i=1; i<=countValueToInt; i++){
+                    Log.d("852","Inside getResult Method - for loop - if function - for loop");
 
                     DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
                             .document("Semester "+ii).collection(String.valueOf(i)).document(String.valueOf(i));
@@ -206,6 +220,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
                             if (value != null && value.exists()) {
 
+                                Log.d("852","Inside getResult Method - for loop - if function - for loop - document inside");
                                 String sN = value.getString("subjectName");
                                 String sC = value.getString("subjectCode");
                                 String sNum = value.getString("number");
@@ -235,13 +250,160 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
                 }
 
+                if(((kkk-1) !=0)&&(ii==(kkk-1))){
+
+                    Log.d("753","inside ygpa loop");
+                    sumss = 0;
+                    totss = 0;
+                    totcss =0;
+                    gpaValuess =0;
+                    String namk = "courseCount"+(kkk-1);
+
+                    String isShowk = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+namk.trim(), "");
+
+                    //Log.d("753", "kkk")
+
+                    Log.d("1111", "ii==kkk kkk "+(kkk-1)+" isShowk "+isShowk+ " ii "+ii+" isShow "+isShow);
+                    if (isShowk != null){
+
+                        Log.d("753","inside ygpa loop inside if 1");
+                        int hh = Integer.parseInt(isShowk);
+                        String[] subNamey = new String[hh];
+                        String[] subCodey = new String[hh];
+                        String[] subGradey = new String[hh];
+                        String[] subCredity = new String[hh];
+                        String[] subGPAy = new String[hh];
+                        String[] subNumy = new String[hh];
+                        if(hh%2==0){
+
+                            String namkk = "courseCount"+(kkk);
+
+                            String isShowkk = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+namkk.trim(), "");
+
+                            if (isShowkk != null){
+                                Log.d("753","inside ygpa loop inside if 2");
+                                int hhh = Integer.parseInt(isShowkk);
+                                String[] subNameyy = new String[hhh];
+                                String[] subCodeyy = new String[hhh];
+                                String[] subGradeyy = new String[hhh];
+                                String[] subCredityy = new String[hhh];
+                                String[] subGPAyy = new String[hhh];
+                                String[] subNumyy = new String[hhh];
+                                for (int ll=(kkk-1); ll<=kkk; ll++){
+
+                                    Log.d("753","inside ygpa loop inside for 1");
+                                    //Log.d("753","inside ygpa loop inside for 1 aaa = "+aaa);
+
+                                    if (ll==(kkk-1)){
+                                        for(int i=1; i<=hh; i++){
+                                            Log.d("753","inside ygpa loop inside for 2"+" hh = "+hh+" ll = "+ll+" kkk "+kkk);
+                                            DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
+                                                    .document("Semester "+(kkk-1)).collection(String.valueOf(i)).document(String.valueOf(i));
+                                            int finalI = i;
+                                            int jjj = kkk-1;
+                                            Log.d("753","inside ygpa loop inside for ii  = "+ii);
+                                            documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onEvent(@Nullable @org.jetbrains.annotations
+                                                        .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+
+                                                    if (value != null && value.exists()) {
+                                                        Log.d("753","inside ygpa loop inside document");
+                                                        String sN = value.getString("subjectName");
+                                                        String sC = value.getString("subjectCode");
+                                                        String sNum = value.getString("number");
+                                                        String sGra = value.getString("Grade");
+                                                        String sCre = value.getString("Credit");
+                                                        String sGpa = value.getString("Gpa");
+
+                                                        int a = finalI -1;
+                                                        int z = hh-1;
+                                                        subNamey[a] = sN;
+                                                        subCodey[a] = sC;
+                                                        subGPAy[a] = sGpa;
+                                                        subGradey[a] = sGra;
+                                                        subNumy[a] = sNum;
+                                                        subCredity[a] = sCre;
+
+                                                        String jj = "Semester "+String.valueOf(jjj);
+
+                                                        getDataFromDatabaseYG(subNamey,subCodey,subGPAy,subGradey, subNumy, subCredity,a,z,jj);
+
+                                                        if (finalI==hh){
+                                                            return;
+
+                                                        }
+
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }else if (ll==kkk){
+                                        for(int i=1; i<=hhh; i++){
+                                            Log.d("753","inside ygpa loop inside for 2"+" hhh = "+hhh+" ll = "+ll+" kkk "+kkk);
+                                            DocumentReference documentReference = fStore.collection("Subjects").document(userId).collection("Semester")
+                                                    .document("Semester "+kkk).collection(String.valueOf(i)).document(String.valueOf(i));
+                                            int finalI = i;
+                                            int jjj = kkk;
+                                            Log.d("753","inside ygpa loop inside for ii  = "+ii);
+                                            documentReference.addSnapshotListener(Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onEvent(@Nullable @org.jetbrains.annotations
+                                                        .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+
+                                                    if (value != null && value.exists()) {
+                                                        Log.d("753","inside ygpa loop inside document");
+                                                        String sN = value.getString("subjectName");
+                                                        String sC = value.getString("subjectCode");
+                                                        String sNum = value.getString("number");
+                                                        String sGra = value.getString("Grade");
+                                                        String sCre = value.getString("Credit");
+                                                        String sGpa = value.getString("Gpa");
+
+                                                        int a = finalI -1;
+                                                        int z = hhh-1;
+                                                        Log.d("753"," i = "+finalI+" a "+a);
+                                                        subNameyy[a] = sN;
+                                                        subCodeyy[a] = sC;
+                                                        subGPAyy[a] = sGpa;
+                                                        subGradeyy[a] = sGra;
+                                                        subNumyy[a] = sNum;
+                                                        subCredityy[a] = sCre;
+
+                                                        String jj = "Semester "+String.valueOf(jjj);
+
+                                                        getDataFromDatabaseYG(subNameyy,subCodeyy,subGPAyy,subGradeyy, subNumyy, subCredityy,a,z,jj);
+
+                                                        if (finalI==hhh){
+                                                            return;
+
+                                                        }
+
+                                                    }
+                                                }
+                                            });
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+                        }
+
+
+                    }
+
+                }
                 if (ii==kkk){
                     sums = 0;
                     tots = 0;
                     totcs =0;
                     gpaValues =0;
                     String namk = "courseCount"+kkk;
-                    String isShowk = PreferenceManager.getDefaultSharedPreferences(this).getString(namk.trim(), "");
+                    String isShowk = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+namk.trim(), "");
 
                     Log.d("1111", "ii==kkk kkk "+kkk+" isShowk "+isShowk+ " ii "+ii+" isShow "+isShow);
                     if (isShowk != null){
@@ -297,6 +459,182 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
             }
 
         }
+
+    }
+
+    private void getDataFromDatabaseYG(String[] subName, String[] subCode, String[] subGPA, String[] subGrade, String[] subNum, String[] subCredit, int a, int z, String jj) {
+        Log.d("753","inside ygpa loop inside getdataFromDatabaseYG");
+        Log.d("753"," a & z = "+a+" "+z);
+        fStore = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        String userId = fAuth.getCurrentUser().getUid();
+
+        DocumentReference documentReference = fStore.collection("GradesValue").document(userId);
+        documentReference.addSnapshotListener( Subjects_Activity.this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable @org.jetbrains.annotations
+                    .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+
+                if (value != null && value.exists()) {
+                    Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document");
+                    String g = subGrade[a];
+                    String gpa = subGPA[a];
+                    String cret = subCredit[a];
+                    double cr = Double.parseDouble(cret);
+
+                    if (gpa.equals("GPA")){
+                        Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document if 1");
+                        if (g.equals("A+")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("APV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("A")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("AV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("A-")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("AMV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("B+")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("BPV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("B")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("BV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("B-")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("BMV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("C+")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("CPV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            // Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("C")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("CV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("C-")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("CMV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else if (g.equals("D+")){
+                            Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document grade = "+g);
+                            String v = value.getString("DPV");
+                            String c = subCredit[a];
+                            double cc = Double.parseDouble(c);
+                            double vc = Double.parseDouble(v);
+
+                            totss = cc*vc;
+                            sumss = sumss +totss;
+
+                            //Toast.makeText(Subjects_Activity.this, "sum "+sums,Toast.LENGTH_SHORT).show();
+
+                        }else {
+
+                        }
+
+                        totcss = totcss+ cr;
+                        Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document if 1 totcss = "+totcss);
+                        //Toast.makeText(Subjects_Activity.this, "tot cre  "+totcs,Toast.LENGTH_SHORT).show();
+
+                        gpaValuess = sumss/totcss;
+                        Log.d("753","inside ygpa loop inside getdataFromDatabaseYG document if 1 gpaValuess = "+gpaValuess);
+                        //df.setRoundingMode(RoundingMode.UP);
+                        getGradePointValue.setGradeValue(gpaValuess);
+                        if (a==z){
+                            //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
+                            PreferenceManager
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString(userId+"isGpaValYGPA"+jj, String.valueOf(gpaValuess)).apply();
+                            Log.d("753","gpaValuess = "+gpaValuess);
+                            Log.d("753","gpaValuess jj = "+jj);
+
+                        }
+                        //Toast.makeText(Subjects_Activity.this, "gpa Value  "+gpaValues,Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+
+                }
+            }
+        });
+        //String k = subGrade[a];
+        // Toast.makeText(this," k = "+k+" grade value = ",Toast.LENGTH_SHORT).show();
 
     }
 
@@ -440,12 +778,12 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                         //Toast.makeText(Subjects_Activity.this, "tot cre  "+totcs,Toast.LENGTH_SHORT).show();
 
                         gpaValues = sums/totcs;
-                        df.setRoundingMode(RoundingMode.UP);
+                        //df.setRoundingMode(RoundingMode.UP);
                         getGradePointValue.setGradeValue(gpaValues);
                         if (a==z){
                             //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
                             PreferenceManager
-                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaVal"+jj, String.valueOf(df.format(gpaValues))).apply();
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString(userId+"isGpaVal"+jj, String.valueOf(gpaValues)).apply();
                             Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
                             intent.putExtra("gpaValue",g);
                             startActivity(intent);
@@ -467,6 +805,9 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
     private void getDataFromDatabaseSG(String[] subName, String[] subCode, String[] subGPA, String[] subGrade, String[] subNum, String[] subCredit, int a, int z) {
 
+        Log.d("852","Inside getResult Method - for loop - if function - for loop - document inside-" +
+                "inside getDataFromDatabaseSG");
+
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         String userId = fAuth.getCurrentUser().getUid();
@@ -478,7 +819,8 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                     .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
 
                 if (value != null && value.exists()) {
-
+                    Log.d("852","Inside getResult Method - for loop - if function - for loop - document inside-" +
+                            "inside getDataFromDatabaseSG inside document");
                     String g = subGrade[a];
                     String gpa = subGPA[a];
                     String cret = subCredit[a];
@@ -605,12 +947,14 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                        // Toast.makeText(Subjects_Activity.this, "tot cre  "+totC,Toast.LENGTH_SHORT).show();
 
                         gpaValue = sum/totC;
-                        df.setRoundingMode(RoundingMode.UP);
+                        //df.setRoundingMode(RoundingMode.UP);
                         getGradePointValue.setGradeValue(gpaValue);
                         if (a==z){
+                            Log.d("852","Inside getResult Method - for loop - if function - for loop - document inside-" +
+                                    "inside getDataFromDatabaseSG get GPA value");
                             //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
                             PreferenceManager
-                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString("isGpaValFinal", String.valueOf(df.format(gpaValue))).apply();
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString(userId+"isGpaValFinal", String.valueOf(gpaValue)).apply();
                             Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
                             intent.putExtra("gpaValue",g);
                             startActivity(intent);
@@ -638,18 +982,18 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         String kk = sName.substring(sName.length()-1);
 
         Subjects s;
-        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+        String b = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"b", "");
 
         Log.d("123"," b "+b);
         String nam = "courseCount"+kk;
-        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+nam.trim(), "");
 
         countGetValue = isShow;
 
         if (isShow != null){
             countValueToInt = Integer.parseInt(countGetValue);
         }
-        sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+        sName = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"sName", "");
         for(int i=1; i<=countValueToInt; i++){
             fStore.collection("Subjects").document(userId).collection("Semester")
                     .document(sName).collection(String.valueOf(i)).orderBy("number",Query.Direction.ASCENDING)
@@ -854,11 +1198,14 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
     public void onBackPressed() {
         super.onBackPressed();
 
+        fAuth = FirebaseAuth.getInstance();
+        String userId = fAuth.getCurrentUser().getUid();
+
         String kk = sName.substring(sName.length()-1);
-        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+        String b = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"b", "");
         Log.d("123"," b "+b);
         String nam = "courseCount"+kk;
-        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+nam.trim(), "");
 
         if (isShow != null){
             Intent intent = new Intent(Subjects_Activity.this, Semesters_Activity.class);
@@ -870,7 +1217,8 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
     private ArrayList<Subjects> getMyList() {
 
-
+        fAuth = FirebaseAuth.getInstance();
+        String userId = fAuth.getCurrentUser().getUid();
 
         Log.d("111","sName "+sName);
         String kk = sName.substring(sName.length()-1);
@@ -878,11 +1226,11 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
         ArrayList<Subjects> subjects = new ArrayList<>();
 
         Subjects s;
-        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+        String b = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"b", "");
 
         Log.d("123"," b "+b);
         String nam = "courseCount"+kk;
-        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+nam.trim(), "");
 
         countGetValue = isShow;
 
@@ -901,15 +1249,15 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
     private void EventChangeListner() {
         String userId = fAuth.getCurrentUser().getUid();
         fStore = FirebaseFirestore.getInstance();
-        sName = PreferenceManager.getDefaultSharedPreferences(this).getString("sName", "");
+        sName = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"sName", "");
         Log.d("111","sName "+sName);
         String kk = sName.substring(sName.length()-1);
         Subjects s;
-        String b = PreferenceManager.getDefaultSharedPreferences(this).getString("b", "");
+        String b = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+"b", "");
 
         Log.d("123"," b "+b);
         String nam = "courseCount"+kk;
-        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(nam.trim(), "");
+        String isShow = PreferenceManager.getDefaultSharedPreferences(this).getString(userId+nam.trim(), "");
 
         countGetValue = isShow;
 

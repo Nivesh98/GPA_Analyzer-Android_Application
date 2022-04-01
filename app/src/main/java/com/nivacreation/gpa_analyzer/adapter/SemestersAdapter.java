@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.nivacreation.gpa_analyzer.R;
 import com.nivacreation.gpa_analyzer.SubjectDetails_Activity;
 import com.nivacreation.gpa_analyzer.Subjects_Activity;
@@ -39,6 +40,8 @@ public class SemestersAdapter extends RecyclerView.Adapter<SemestersAdapter.Seme
         Context context;
         ArrayList<Semesters> semestersArrayList;
 
+        FirebaseAuth fAuth;
+
         public SemestersAdapter(Context context, ArrayList<Semesters> semestersArrayList) {
             this.context = context;
             this.semestersArrayList = semestersArrayList;
@@ -57,8 +60,11 @@ public class SemestersAdapter extends RecyclerView.Adapter<SemestersAdapter.Seme
         @Override
         public void onBindViewHolder(@NonNull @NotNull SemestersAdapter.SemesterViewHolder holder, int position) {
 
+            fAuth = FirebaseAuth.getInstance();
+            String uid = fAuth.getCurrentUser().getUid();
+
             String isShow = PreferenceManager
-                    .getDefaultSharedPreferences(context.getApplicationContext()).getString("subjectDetails"+position, "Empty");
+                    .getDefaultSharedPreferences(context.getApplicationContext()).getString(uid+"subjectDetails"+position, "Empty");
 
             Semesters semesters = semestersArrayList.get(position);
 
@@ -68,7 +74,7 @@ public class SemestersAdapter extends RecyclerView.Adapter<SemestersAdapter.Seme
                 @Override
                 public void onClick(View v) {
                     PreferenceManager
-                            .getDefaultSharedPreferences(context).edit().putString("sName", semestersArrayList.get(position).getTitle()).apply();
+                            .getDefaultSharedPreferences(context).edit().putString(uid+"sName", semestersArrayList.get(position).getTitle()).apply();
                     String k ="1"+semestersArrayList.get(position).getTitle();
 
                     Log.d("123", "adapter k "+k);
@@ -76,14 +82,14 @@ public class SemestersAdapter extends RecyclerView.Adapter<SemestersAdapter.Seme
                     if(isShow.equals(k.trim())){
                         Intent intent = new Intent(context, Subjects_Activity.class);
                         PreferenceManager
-                                .getDefaultSharedPreferences(context).edit().putString("iGetSubDetail", "#").apply();
+                                .getDefaultSharedPreferences(context).edit().putString(uid+"iGetSubDetail", "#").apply();
                         intent.putExtra("SemesterName", semestersArrayList.get(position).getTitle());
                         context.startActivity(intent);
 
                     }else{
                         Intent intent = new Intent(context, SubjectDetails_Activity.class);
                         PreferenceManager
-                                .getDefaultSharedPreferences(context).edit().putString("iGetSubDetail", "*").apply();
+                                .getDefaultSharedPreferences(context).edit().putString(uid+"iGetSubDetail", "*").apply();
                         intent.putExtra("SemesterName", semestersArrayList.get(position).getTitle());
                         context.startActivity(intent);
                     }

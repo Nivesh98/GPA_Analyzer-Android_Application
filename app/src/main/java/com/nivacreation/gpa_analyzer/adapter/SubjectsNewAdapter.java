@@ -75,7 +75,7 @@ public class SubjectsNewAdapter extends RecyclerView.Adapter<SubjectsNewAdapter.
         holder.subjectCode.setText(subjects.getSubjectCode());
         holder.subjectName.setText(subjects.getSubjectName());
 
-        String isShow = PreferenceManager.getDefaultSharedPreferences(context).getString("sName", "");
+        String isShow = PreferenceManager.getDefaultSharedPreferences(context).getString(userId+"sName", "");
 
         if (isShow != null){
             isValue = isShow;
