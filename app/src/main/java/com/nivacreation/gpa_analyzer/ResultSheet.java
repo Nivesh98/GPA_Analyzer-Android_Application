@@ -1,5 +1,6 @@
 package com.nivacreation.gpa_analyzer;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,18 +16,29 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.collection.LLRBNode;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.nivacreation.gpa_analyzer.model.SubjectsNew;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class ResultSheet extends AppCompatActivity {
 
-    TextView gpaValue, ygpaValue, fgpaValue;
+    TextView gpaValue, ygpaValue, fgpaValue, gradeTxt;
 
     TextView classValue, classStatus;
     ImageView classImage;
 
     private FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    DocumentReference documentReference;
 
     String sName;
 
@@ -34,6 +46,8 @@ public class ResultSheet extends AppCompatActivity {
     double fgg;
 
     double ygg;
+
+    double totalCredit =0, totalSum=0, gradeValue= 0;
 
     private static final DecimalFormat df = new DecimalFormat("0.0000");
 
@@ -43,10 +57,13 @@ public class ResultSheet extends AppCompatActivity {
         setContentView(R.layout.activity_result_sheet);
 
         mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
 
         gpaValue = findViewById(R.id.gpaValue);
         ygpaValue = findViewById(R.id.ygpaValue);
         fgpaValue = findViewById(R.id.fgpaValue);
+
+        gradeTxt = findViewById(R.id.gradeTxt);
 
         classValue = findViewById(R.id.classValue);
         classStatus = findViewById(R.id.classStatus);
@@ -64,9 +81,23 @@ public class ResultSheet extends AppCompatActivity {
         String g = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaVal"+"Semester "+kk, "");
         String fg = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaValFinal", "");
 
+        String totCredit = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaValFinalToCre", "");
+        String totSum = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaValFinalTotalS", "");
+
         String yg = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaValYGPA"+"Semester "+kk, "");
 
-        Log.d("963","g = "+g+" fg = "+fg);
+        Log.d("963","Total Credit = "+totCredit+" TotalSum = "+totSum);
+
+        if (!totCredit.equals("")){
+
+            totalCredit = Double.parseDouble(totCredit);
+        }
+
+        if (!totSum.equals("")){
+
+            totalSum = Double.parseDouble(totSum);
+
+        }
 
         if (!yg.equals("")){
             ygg = Double.parseDouble(yg);
@@ -117,6 +148,8 @@ public class ResultSheet extends AppCompatActivity {
             classStatus.setTextColor(Color.rgb(100,190,10));
             classImage.setBackgroundResource(R.drawable.star);
 
+            gradeTxt.setVisibility(View.INVISIBLE);
+
         }else if (finClass>=3.3 && finClass<3.7){
 
             classValue.setText("Second Upper - ");
@@ -124,6 +157,12 @@ public class ResultSheet extends AppCompatActivity {
             classStatus.setText("Great!");
             classStatus.setTextColor(Color.rgb(50,90,190));
             classImage.setBackgroundResource(R.drawable.smiling);
+
+            // gv = (((3.71)*(totC+3))-sum)/3
+
+            gradeValue =(((3.7000)*(totalCredit+3))-totalSum)/3;
+
+            getGrade(gradeValue,"Getting First Class ");
 
         }else if (finClass>=3 && finClass<3.3){
 
@@ -133,6 +172,10 @@ public class ResultSheet extends AppCompatActivity {
             classStatus.setTextColor(Color.rgb(255,190,90));
             classImage.setBackgroundResource(R.drawable.happy);
 
+            gradeValue =(((3.3000)*(totalCredit+3))-totalSum)/3;
+
+            getGrade(gradeValue,"Getting Second Upper ");
+
         }else if (finClass>=2 && finClass<3){
 
             classValue.setText("Pass - ");
@@ -141,14 +184,100 @@ public class ResultSheet extends AppCompatActivity {
             classStatus.setTextColor(Color.rgb(190,90,90));
             classImage.setBackgroundResource(R.drawable.confused);
 
+            gradeValue =(((3.000)*(totalCredit+3))-totalSum)/3;
+
+            getGrade(gradeValue,"Getting Second Lower ");
+
         }else{
 
             classValue.setText("Bad!");
             classValue.setTextColor(Color.rgb(255,0,0));
             classStatus.setVisibility(View.INVISIBLE);
             classImage.setBackgroundResource(R.drawable.sad);
+
+            gradeValue =(((2.000)*(totalCredit+3))-totalSum)/3;
+
+            getGrade(gradeValue,"Getting Pass ");
         }
 
+
+    }
+
+    private void getGrade(double gradeValue, String description) {
+        mAuth = FirebaseAuth.getInstance();
+        String userId = mAuth.getCurrentUser().getUid();
+
+        DocumentReference documentReference = fStore.collection("GradesValue").document(userId);
+        documentReference.addSnapshotListener( ResultSheet.this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable @org.jetbrains.annotations
+                    .Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+
+                if (value != null && value.exists()) {
+
+                    String APV =(value.getString("APV"));
+                   String AV =(value.getString("AV"));
+                   String AMV =(value.getString("AMV"));
+                    String BPV =(value.getString("BPV"));
+                    String BV =(value.getString("BV"));
+                    String BMV =(value.getString("BMV"));
+                   String CPV =(value.getString("CPV"));
+                    String CV =(value.getString("CV"));
+                    String CMV =(value.getString("CMV"));
+                    String DPV =(value.getString("DPV"));
+
+                    double apvd = Double.parseDouble(APV);
+                    double avd = Double.parseDouble(AV);
+                    double amvd = Double.parseDouble(AMV);
+                    double bpvd = Double.parseDouble(BPV);
+                    double bvd = Double.parseDouble(BV);
+                    double bmvd = Double.parseDouble(BMV);
+                    double cpvd = Double.parseDouble(CPV);
+                    double cvd = Double.parseDouble(CV);
+                    double cmvd = Double.parseDouble(CMV);
+                    double dpvd = Double.parseDouble(DPV);
+
+                    double gradevalueArray[] = new double[10];
+
+                    gradevalueArray[0] = dpvd;
+                    gradevalueArray[1] = cmvd;
+                    gradevalueArray[2] = cvd;
+                    gradevalueArray[3] = cpvd;
+                    gradevalueArray[4] = bmvd;
+                    gradevalueArray[5] = bvd;
+                    gradevalueArray[6] = bpvd;
+                    gradevalueArray[7] = amvd;
+                    gradevalueArray[8] = avd;
+                    gradevalueArray[9] = apvd;
+
+                    String gradeArray[] = new String[10];
+
+                    gradeArray[0]="D+";
+                    gradeArray[1] ="C-";
+                    gradeArray[2] ="C";
+                    gradeArray[3] ="C+";
+                    gradeArray[4] ="B-";
+                    gradeArray[5] ="B";
+                    gradeArray[6] ="B+";
+                    gradeArray[7] ="A-";
+                    gradeArray[8] ="A";
+                    gradeArray[9] ="A+";
+
+                    for (int i=0; i<10; i++){
+
+                        if (gradevalueArray[i]>=gradeValue){
+
+                            gradeTxt.setText(description+gradeArray[i]);
+                            break;
+
+                        }
+                    }
+
+
+
+                }
+            }
+        });
 
     }
 

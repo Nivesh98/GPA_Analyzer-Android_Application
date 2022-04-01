@@ -954,6 +954,15 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             //Toast.makeText(Subjects_Activity.this, "inside  ",Toast.LENGTH_SHORT).show();
                             PreferenceManager
                                     .getDefaultSharedPreferences(Subjects_Activity.this).edit().putString(userId+"isGpaValFinal", String.valueOf(gpaValue)).apply();
+
+                            PreferenceManager
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit()
+                                    .putString(userId+"isGpaValFinalToCre", String.valueOf(totC)).apply();
+
+                            PreferenceManager
+                                    .getDefaultSharedPreferences(Subjects_Activity.this).edit()
+                                    .putString(userId+"isGpaValFinalTotalS", String.valueOf(sum)).apply();
+
                             Intent intent = new Intent(Subjects_Activity.this, ResultSheet.class);
                             intent.putExtra("gpaValue",g);
                             startActivity(intent);
