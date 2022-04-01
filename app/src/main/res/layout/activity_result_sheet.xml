@@ -219,15 +219,46 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.066">
 
-        <TextView
-            android:id="@+id/predicttxt"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearlayPredict"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Predict nearest Class"
-            android:textColor="#69E41B"
-            android:textSize="20sp"
-            android:fontFamily="@font/jomolhari"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/predicttxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Predict nearest Class - "
+                android:textSize="20sp"
+                android:textColor="#69E41B"
+                android:fontFamily="@font/jomolhari"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:text="Total Credit"
+                android:textAlignment="center"
+                android:textColor="#69E41B"
+                android:fontFamily="@font/jomolhari"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/enterTotalCredit"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter"
+                android:inputType="phone"
+                android:textColorHint="#69E41B"
+                android:textSize="16sp"
+                android:textColor="#69E41B"
+                android:fontFamily="@font/jomolhari"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
 
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"

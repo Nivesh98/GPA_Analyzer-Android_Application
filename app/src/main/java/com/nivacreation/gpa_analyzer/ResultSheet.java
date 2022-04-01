@@ -8,9 +8,14 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +37,10 @@ import java.text.DecimalFormat;
 public class ResultSheet extends AppCompatActivity {
 
     TextView gpaValue, ygpaValue, fgpaValue, gradeTxt,predictTxt;
+
+    EditText enterTotCre;
+
+    LinearLayout linearLayout;
 
     TextView classValue, classStatus;
     ImageView classImage;
@@ -58,6 +67,10 @@ public class ResultSheet extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
+
+        enterTotCre = findViewById(R.id.enterTotalCredit);
+
+        linearLayout = findViewById(R.id.linearlayPredict);
 
         gpaValue = findViewById(R.id.gpaValue);
         ygpaValue = findViewById(R.id.ygpaValue);
@@ -115,6 +128,7 @@ public class ResultSheet extends AppCompatActivity {
 
         if ((semNum%2)==1){
             //df.setRoundingMode(RoundingMode.UP);
+          //  df.setMaximumFractionDigits(4);
             ygpaValue.setText(df.format(gg));
             Log.d("963"," gg ="+gg);
         }else{
@@ -128,19 +142,22 @@ public class ResultSheet extends AppCompatActivity {
             double t = (psv+sv)/2;
             //df.setRoundingMode(RoundingMode.UP);
             Log.d("963"," yGpa = "+t);
+           // df.setMaximumFractionDigits(4);
             ygpaValue.setText(String.valueOf(df.format(ygg)));
 
         }
        // df.setRoundingMode(RoundingMode.UP);
+        //df.setMaximumFractionDigits(4);
         gpaValue.setText(df.format(gg));
         fgpaValue.setText(df.format(fgg));
+
+        gradeTxt.setVisibility(View.INVISIBLE);
 
         Log.d("963"," sgpa ="+gg);
         Log.d("963"," fgpa = "+fgg);
 
         double finClass = Double.parseDouble(fg);
        // df.setRoundingMode(RoundingMode.UP);
-
         if (finClass>=3.7000){
 
             classValue.setText("First Class - ");
@@ -151,6 +168,7 @@ public class ResultSheet extends AppCompatActivity {
 
             gradeTxt.setVisibility(View.INVISIBLE);
             predictTxt.setVisibility(View.INVISIBLE);
+            linearLayout.setVisibility(View.INVISIBLE);
 
         }else if (finClass>=3.3 && finClass<3.7){
 
@@ -160,12 +178,6 @@ public class ResultSheet extends AppCompatActivity {
             classStatus.setTextColor(Color.rgb(50,90,190));
             classImage.setBackgroundResource(R.drawable.smiling);
 
-            // gv = (((3.71)*(totC+3))-sum)/3
-
-            gradeValue =(((3.7000)*(totalCredit+3))-totalSum)/3;
-
-            getGrade(gradeValue,"Minimum grade for getting First Class ");
-
         }else if (finClass>=3 && finClass<3.3){
 
             classValue.setText("Second Lower - ");
@@ -173,10 +185,6 @@ public class ResultSheet extends AppCompatActivity {
             classStatus.setText("Good!");
             classStatus.setTextColor(Color.rgb(255,190,90));
             classImage.setBackgroundResource(R.drawable.happy);
-
-            gradeValue =(((3.3000)*(totalCredit+3))-totalSum)/3;
-
-            getGrade(gradeValue,"Minimum grade for getting Second Upper ");
 
         }else if (finClass>=2 && finClass<3){
 
@@ -186,10 +194,6 @@ public class ResultSheet extends AppCompatActivity {
             classStatus.setTextColor(Color.rgb(190,90,90));
             classImage.setBackgroundResource(R.drawable.confused);
 
-            gradeValue =(((3.000)*(totalCredit+3))-totalSum)/3;
-
-            getGrade(gradeValue,"Minimum grade for getting Second Lower ");
-
         }else{
 
             classValue.setText("Bad!");
@@ -197,12 +201,96 @@ public class ResultSheet extends AppCompatActivity {
             classStatus.setVisibility(View.INVISIBLE);
             classImage.setBackgroundResource(R.drawable.sad);
 
-            gradeValue =(((2.000)*(totalCredit+3))-totalSum)/3;
-
-            getGrade(gradeValue,"Minimum grade for getting Pass ");
         }
+        enterTotCre.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String credit = enterTotCre.getText().toString();
+
+                if (!credit.equals("")){
+                    int cre = Integer.parseInt(credit);
+
+                    if (finClass>=3.7000){
+
+                        classValue.setText("First Class - ");
+                        classValue.setTextColor(Color.rgb(100,190,10));
+                        classStatus.setText("Excellent!");
+                        classStatus.setTextColor(Color.rgb(100,190,10));
+                        classImage.setBackgroundResource(R.drawable.star);
+
+                        gradeTxt.setVisibility(View.INVISIBLE);
+                        predictTxt.setVisibility(View.INVISIBLE);
+                        linearLayout.setVisibility(View.INVISIBLE);
+
+                    }else if (finClass>=3.3 && finClass<3.7){
+
+                        classValue.setText("Second Upper - ");
+                        classValue.setTextColor(Color.rgb(50,90,190));
+                        classStatus.setText("Great!");
+                        classStatus.setTextColor(Color.rgb(50,90,190));
+                        classImage.setBackgroundResource(R.drawable.smiling);
+
+                        // gv = (((3.71)*(totC+3))-sum)/3
+                        gradeTxt.setVisibility(View.VISIBLE);
+                        gradeValue =(((3.7000)*(totalCredit+cre))-totalSum)/cre;
+                        Log.d("963", "gradeValue in second upper= "+gradeValue);
+                        getGrade(gradeValue,"Minimum grade for getting First Class ");
+
+                    }else if (finClass>=3 && finClass<3.3){
+                        gradeTxt.setVisibility(View.VISIBLE);
+                        classValue.setText("Second Lower - ");
+                        classValue.setTextColor(Color.rgb(255,190,90));
+                        classStatus.setText("Good!");
+                        classStatus.setTextColor(Color.rgb(255,190,90));
+                        classImage.setBackgroundResource(R.drawable.happy);
+
+                        gradeValue =(((3.3000)*(totalCredit+cre))-totalSum)/cre;
+                        Log.d("963", "gradeValue in second lower= "+gradeValue);
+                        getGrade(gradeValue,"Minimum grade for getting Second Upper ");
+
+                    }else if (finClass>=2 && finClass<3){
+                        gradeTxt.setVisibility(View.VISIBLE);
+                        classValue.setText("Pass - ");
+                        classValue.setTextColor(Color.rgb(190,90,90));
+                        classStatus.setText("Fair!");
+                        classStatus.setTextColor(Color.rgb(190,90,90));
+                        classImage.setBackgroundResource(R.drawable.confused);
+
+                        gradeValue =(((3.000)*(totalCredit+cre))-totalSum)/cre;
+                        Log.d("963", "gradeValue in passed= "+gradeValue);
+                        getGrade(gradeValue,"Minimum grade for getting Second Lower ");
+
+                    }else{
+                        gradeTxt.setVisibility(View.VISIBLE);
+                        classValue.setText("Bad!");
+                        classValue.setTextColor(Color.rgb(255,0,0));
+                        classStatus.setVisibility(View.INVISIBLE);
+                        classImage.setBackgroundResource(R.drawable.sad);
+
+                        gradeValue =(((2.000)*(totalCredit+cre))-totalSum)/cre;
+                        Log.d("963", "gradeValue in bad= "+gradeValue);
+                        getGrade(gradeValue,"Minimum grade for getting Pass ");
+                    }
+                }else{
+
+                    gradeTxt.setVisibility(View.INVISIBLE);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        Log.d("963", "gradeValue = "+gradeValue);
     }
 
     private void getGrade(double gradeValue, String description) {
@@ -271,6 +359,12 @@ public class ResultSheet extends AppCompatActivity {
 
                             gradeTxt.setText(description+"\n"+gradeArray[i]);
                             break;
+
+                        }
+
+                        if (gradevalueArray[9]<gradeValue){
+
+                            gradeTxt.setText("You can't earn other class");
 
                         }
                     }
