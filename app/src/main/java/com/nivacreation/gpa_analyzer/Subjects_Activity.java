@@ -250,9 +250,9 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
 
                 }
 
-                if(((kkk-1) !=0)&&(ii==(kkk-1))){
+                if(((kkk-1) !=0)&&(ii==(kkk-1))&&(kkk%2==0)){
 
-                    Log.d("753","inside ygpa loop");
+                    Log.d("753","inside ygpa loop kkk = "+kkk);
                     sumss = 0;
                     totss = 0;
                     totcss =0;
@@ -274,7 +274,6 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                         String[] subCredity = new String[hh];
                         String[] subGPAy = new String[hh];
                         String[] subNumy = new String[hh];
-                        if(hh%2==0){
 
                             String namkk = "courseCount"+(kkk);
 
@@ -391,7 +390,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                                 }
 
                             }
-                        }
+
 
 
                     }
@@ -675,7 +674,7 @@ public class Subjects_Activity extends AppCompatActivity implements GestureDetec
                             String v = value.getString("AV");
                             String c = subCredit[a];
                             double cc = Double.parseDouble(c);
-                            double vc = Double.parseDouble(v);
+                             double vc = Double.parseDouble(v);
 
                             tots = cc*vc;
                             sums = sums +tots;
