@@ -31,7 +31,7 @@ import java.text.DecimalFormat;
 
 public class ResultSheet extends AppCompatActivity {
 
-    TextView gpaValue, ygpaValue, fgpaValue, gradeTxt;
+    TextView gpaValue, ygpaValue, fgpaValue, gradeTxt,predictTxt;
 
     TextView classValue, classStatus;
     ImageView classImage;
@@ -64,6 +64,7 @@ public class ResultSheet extends AppCompatActivity {
         fgpaValue = findViewById(R.id.fgpaValue);
 
         gradeTxt = findViewById(R.id.gradeTxt);
+        predictTxt = findViewById(R.id.predicttxt);
 
         classValue = findViewById(R.id.classValue);
         classStatus = findViewById(R.id.classStatus);
@@ -149,6 +150,7 @@ public class ResultSheet extends AppCompatActivity {
             classImage.setBackgroundResource(R.drawable.star);
 
             gradeTxt.setVisibility(View.INVISIBLE);
+            predictTxt.setVisibility(View.INVISIBLE);
 
         }else if (finClass>=3.3 && finClass<3.7){
 
@@ -162,7 +164,7 @@ public class ResultSheet extends AppCompatActivity {
 
             gradeValue =(((3.7000)*(totalCredit+3))-totalSum)/3;
 
-            getGrade(gradeValue,"Getting First Class ");
+            getGrade(gradeValue,"Minimum grade for getting First Class ");
 
         }else if (finClass>=3 && finClass<3.3){
 
@@ -174,7 +176,7 @@ public class ResultSheet extends AppCompatActivity {
 
             gradeValue =(((3.3000)*(totalCredit+3))-totalSum)/3;
 
-            getGrade(gradeValue,"Getting Second Upper ");
+            getGrade(gradeValue,"Minimum grade for getting Second Upper ");
 
         }else if (finClass>=2 && finClass<3){
 
@@ -186,7 +188,7 @@ public class ResultSheet extends AppCompatActivity {
 
             gradeValue =(((3.000)*(totalCredit+3))-totalSum)/3;
 
-            getGrade(gradeValue,"Getting Second Lower ");
+            getGrade(gradeValue,"Minimum grade for getting Second Lower ");
 
         }else{
 
@@ -197,7 +199,7 @@ public class ResultSheet extends AppCompatActivity {
 
             gradeValue =(((2.000)*(totalCredit+3))-totalSum)/3;
 
-            getGrade(gradeValue,"Getting Pass ");
+            getGrade(gradeValue,"Minimum grade for getting Pass ");
         }
 
 
@@ -267,7 +269,7 @@ public class ResultSheet extends AppCompatActivity {
 
                         if (gradevalueArray[i]>=gradeValue){
 
-                            gradeTxt.setText(description+gradeArray[i]);
+                            gradeTxt.setText(description+"\n"+gradeArray[i]);
                             break;
 
                         }

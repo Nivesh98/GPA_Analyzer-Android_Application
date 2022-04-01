@@ -206,19 +206,61 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/gradeTxt"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="grade"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.187">
+        app:layout_constraintVertical_bias="0.066">
 
-    </TextView>
+        <TextView
+            android:id="@+id/predicttxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Predict nearest Class"
+            android:textColor="#69E41B"
+            android:textSize="20sp"
+            android:fontFamily="@font/jomolhari"
+            android:textStyle="bold" />
 
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/gradeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="grade"
+                    android:fontFamily="@font/jomolhari"
+                    android:textAlignment="center"
+                    android:textColorHint="#DAC50D"
+                    android:textStyle="bold"
+                    android:textColor="#DAC50D"
+                    android:textSize="16sp"/>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
