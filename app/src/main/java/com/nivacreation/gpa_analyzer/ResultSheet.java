@@ -129,6 +129,7 @@ public class ResultSheet extends AppCompatActivity {
         if ((semNum%2)==1){
             //df.setRoundingMode(RoundingMode.UP);
           //  df.setMaximumFractionDigits(4);
+           // df.setRoundingMode(RoundingMode.FLOOR);
             ygpaValue.setText(df.format(gg));
             Log.d("963"," gg ="+gg);
         }else{
@@ -143,11 +144,13 @@ public class ResultSheet extends AppCompatActivity {
             //df.setRoundingMode(RoundingMode.UP);
             Log.d("963"," yGpa = "+t);
            // df.setMaximumFractionDigits(4);
+           // df.setRoundingMode(RoundingMode.FLOOR);
             ygpaValue.setText(String.valueOf(df.format(ygg)));
 
         }
        // df.setRoundingMode(RoundingMode.UP);
         //df.setMaximumFractionDigits(4);
+        //df.setRoundingMode(RoundingMode.FLOOR);
         gpaValue.setText(df.format(gg));
         fgpaValue.setText(df.format(fgg));
 
@@ -156,8 +159,11 @@ public class ResultSheet extends AppCompatActivity {
         Log.d("963"," sgpa ="+gg);
         Log.d("963"," fgpa = "+fgg);
 
-        double finClass = Double.parseDouble(fg);
+        String h = df.format(fgg);
+
+        double finClass = Double.parseDouble(h);
        // df.setRoundingMode(RoundingMode.UP);
+       // df.setRoundingMode(RoundingMode.FLOOR);
         if (finClass>=3.7000){
 
             classValue.setText("First Class - ");
@@ -218,11 +224,6 @@ public class ResultSheet extends AppCompatActivity {
 
                     if (finClass>=3.7000){
 
-                        classValue.setText("First Class - ");
-                        classValue.setTextColor(Color.rgb(100,190,10));
-                        classStatus.setText("Excellent!");
-                        classStatus.setTextColor(Color.rgb(100,190,10));
-                        classImage.setBackgroundResource(R.drawable.star);
 
                         gradeTxt.setVisibility(View.INVISIBLE);
                         predictTxt.setVisibility(View.INVISIBLE);
@@ -230,11 +231,6 @@ public class ResultSheet extends AppCompatActivity {
 
                     }else if (finClass>=3.3 && finClass<3.7){
 
-                        classValue.setText("Second Upper - ");
-                        classValue.setTextColor(Color.rgb(50,90,190));
-                        classStatus.setText("Great!");
-                        classStatus.setTextColor(Color.rgb(50,90,190));
-                        classImage.setBackgroundResource(R.drawable.smiling);
 
                         // gv = (((3.71)*(totC+3))-sum)/3
                         gradeTxt.setVisibility(View.VISIBLE);
@@ -244,11 +240,6 @@ public class ResultSheet extends AppCompatActivity {
 
                     }else if (finClass>=3 && finClass<3.3){
                         gradeTxt.setVisibility(View.VISIBLE);
-                        classValue.setText("Second Lower - ");
-                        classValue.setTextColor(Color.rgb(255,190,90));
-                        classStatus.setText("Good!");
-                        classStatus.setTextColor(Color.rgb(255,190,90));
-                        classImage.setBackgroundResource(R.drawable.happy);
 
                         gradeValue =(((3.3000)*(totalCredit+cre))-totalSum)/cre;
                         Log.d("963", "gradeValue in second lower= "+gradeValue);
@@ -256,11 +247,6 @@ public class ResultSheet extends AppCompatActivity {
 
                     }else if (finClass>=2 && finClass<3){
                         gradeTxt.setVisibility(View.VISIBLE);
-                        classValue.setText("Pass - ");
-                        classValue.setTextColor(Color.rgb(190,90,90));
-                        classStatus.setText("Fair!");
-                        classStatus.setTextColor(Color.rgb(190,90,90));
-                        classImage.setBackgroundResource(R.drawable.confused);
 
                         gradeValue =(((3.000)*(totalCredit+cre))-totalSum)/cre;
                         Log.d("963", "gradeValue in passed= "+gradeValue);
@@ -268,10 +254,6 @@ public class ResultSheet extends AppCompatActivity {
 
                     }else{
                         gradeTxt.setVisibility(View.VISIBLE);
-                        classValue.setText("Bad!");
-                        classValue.setTextColor(Color.rgb(255,0,0));
-                        classStatus.setVisibility(View.INVISIBLE);
-                        classImage.setBackgroundResource(R.drawable.sad);
 
                         gradeValue =(((2.000)*(totalCredit+cre))-totalSum)/cre;
                         Log.d("963", "gradeValue in bad= "+gradeValue);
@@ -353,16 +335,20 @@ public class ResultSheet extends AppCompatActivity {
                     gradeArray[8] ="A";
                     gradeArray[9] ="A+";
 
+                    String k = df.format(gradeValue);
+
+                    double kk = Double.parseDouble(k);
+
                     for (int i=0; i<10; i++){
 
-                        if (gradevalueArray[i]>=gradeValue){
+                        if (gradevalueArray[i]>=kk){
 
                             gradeTxt.setText(description+"\n"+gradeArray[i]);
                             break;
 
                         }
 
-                        if (gradevalueArray[9]<gradeValue){
+                        if (gradevalueArray[9]<kk){
 
                             gradeTxt.setText("You can't earn other class");
 
