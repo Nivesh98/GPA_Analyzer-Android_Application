@@ -50,6 +50,7 @@ public class ResultSheet extends AppCompatActivity {
     DocumentReference documentReference;
 
     String sName;
+    String currentSemNum, maxSemNum;
 
     double gg;
     double fgg;
@@ -90,6 +91,7 @@ public class ResultSheet extends AppCompatActivity {
         sName = PreferenceManager.getDefaultSharedPreferences(this).getString(uid+"sName", "");
         Log.d("111","sName "+sName);
         String kk = sName.substring(sName.length()-1);
+        currentSemNum =kk;
         int semNum = Integer.parseInt(kk);
 
         String g = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaVal"+"Semester "+kk, "");
@@ -99,6 +101,8 @@ public class ResultSheet extends AppCompatActivity {
         String totSum = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaValFinalTotalS", "");
 
         String yg = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaValYGPA"+"Semester "+kk, "");
+
+        maxSemNum = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isShow", "");
 
         Log.d("963","Total Credit = "+totCredit+" TotalSum = "+totSum);
 
@@ -134,15 +138,15 @@ public class ResultSheet extends AppCompatActivity {
             Log.d("963"," gg ="+gg);
         }else{
 
-            int pv = semNum-1;
-            String v = String.valueOf(pv);
-            String gpv = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaVal"+"Semester "+v, "");
-            double psv = Double.parseDouble(g);
-            double sv = Double.parseDouble(gpv);
-
-            double t = (psv+sv)/2;
+//            int pv = semNum-1;
+//            String v = String.valueOf(pv);
+//            String gpv = PreferenceManager.getDefaultSharedPreferences(ResultSheet.this).getString(uid+"isGpaVal"+"Semester "+v, "");
+//            double psv = Double.parseDouble(g);
+//            double sv = Double.parseDouble(gpv);
+//
+//            double t = (psv+sv)/2;
             //df.setRoundingMode(RoundingMode.UP);
-            Log.d("963"," yGpa = "+t);
+//            Log.d("963"," yGpa = "+t);
            // df.setMaximumFractionDigits(4);
            // df.setRoundingMode(RoundingMode.FLOOR);
             ygpaValue.setText(String.valueOf(df.format(ygg)));
@@ -178,6 +182,9 @@ public class ResultSheet extends AppCompatActivity {
 
         }else if (finClass>=3.3 && finClass<3.7){
 
+            if (currentSemNum.equals(maxSemNum)){
+                linearLayout.setVisibility(View.INVISIBLE);
+            }
             classValue.setText("Second Upper - ");
             classValue.setTextColor(Color.rgb(50,90,190));
             classStatus.setText("Great!");
@@ -185,7 +192,9 @@ public class ResultSheet extends AppCompatActivity {
             classImage.setBackgroundResource(R.drawable.smiling);
 
         }else if (finClass>=3 && finClass<3.3){
-
+            if (currentSemNum.equals(maxSemNum)){
+                linearLayout.setVisibility(View.INVISIBLE);
+            }
             classValue.setText("Second Lower - ");
             classValue.setTextColor(Color.rgb(255,190,90));
             classStatus.setText("Good!");
@@ -193,7 +202,9 @@ public class ResultSheet extends AppCompatActivity {
             classImage.setBackgroundResource(R.drawable.happy);
 
         }else if (finClass>=2 && finClass<3){
-
+            if (currentSemNum.equals(maxSemNum)){
+                linearLayout.setVisibility(View.INVISIBLE);
+            }
             classValue.setText("Pass - ");
             classValue.setTextColor(Color.rgb(190,90,90));
             classStatus.setText("Fair!");
@@ -201,7 +212,9 @@ public class ResultSheet extends AppCompatActivity {
             classImage.setBackgroundResource(R.drawable.confused);
 
         }else{
-
+            if (currentSemNum.equals(maxSemNum)){
+                linearLayout.setVisibility(View.INVISIBLE);
+            }
             classValue.setText("Bad!");
             classValue.setTextColor(Color.rgb(255,0,0));
             classStatus.setVisibility(View.INVISIBLE);

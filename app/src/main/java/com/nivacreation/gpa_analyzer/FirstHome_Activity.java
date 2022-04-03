@@ -13,11 +13,14 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.nivacreation.gpa_analyzer.model.Subjects;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -195,21 +198,48 @@ public class FirstHome_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
+                String userId = fAuth.getCurrentUser().getUid();
 
                 if (!count.getText().toString().isEmpty()){
                     int intCount = Integer.parseInt(count.getText().toString());
                     if(intCount >=1 && intCount<=10){
                         String countToString = count.getText().toString();
 
-                      //  Toast.makeText(FirstHome_Activity.this, "Semester Count = " +countToString, Toast.LENGTH_LONG).show();
+                        fStore.collection("GradesValue")
+                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
 
-                        Intent signInActivity = new Intent(FirstHome_Activity.this, Semesters_Activity.class);
-                        PreferenceManager
-                                .getDefaultSharedPreferences(FirstHome_Activity.this).edit().putString(userId+"isShow", countToString).apply();
-                        signInActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(signInActivity);
-                        finish();
+                                        if(error != null){
+                                            return;
+                                        }
+
+                                        for (DocumentChange dc : value.getDocumentChanges()){
+
+                                            if (dc.getType() == DocumentChange.Type.ADDED){
+
+                                                if (dc.getDocument().getId().equals(userId)){
+                                                    //  Toast.makeText(FirstHome_Activity.this, "Semester Count = " +countToString, Toast.LENGTH_LONG).show();
+
+                                                    Intent signInActivity = new Intent(FirstHome_Activity.this, Semesters_Activity.class);
+                                                    PreferenceManager
+                                                            .getDefaultSharedPreferences(FirstHome_Activity.this).edit().putString(userId+"isShow", countToString).apply();
+                                                    signInActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    startActivity(signInActivity);
+                                                    finish();
+                                                }else{
+
+                                                    count.setError("Make Sure! for Confirming Grade Point Values");
+                                                }
+
+                                            }
+
+
+                                        }
+                                    }
+                                });
+
+
                     }else {
                         count.setError("Semester should be \"1 - 10\" !");
                     }
